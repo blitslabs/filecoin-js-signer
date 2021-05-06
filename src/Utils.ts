@@ -168,6 +168,11 @@ export function tryToPrivateKeyBuffer(privateKey) {
   return privateKey
 }
 
+/*************************************************
+ * Title: filecoin-js-signer
+ * Author: Blits Labs 
+ *************************************************/
+
 /**
  * @notice Sign any kind of message with private key
  * @param message 
