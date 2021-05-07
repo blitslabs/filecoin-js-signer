@@ -1,88 +1,88 @@
-import { BigNumber } from 'bignumber.js'
+import { BigNumber } from "bignumber.js";
 
-export type Address = string
+export type Address = string;
 
-export type PrivateKey = string
+export type PrivateKey = string;
 
-export type TokenAmount = BigNumber
+export type TokenAmount = BigNumber;
 
-export type Nonce = number
+export type Nonce = number;
 
-export type MsgParams = string
+export type MsgParams = string;
 
-export type CID = string | object
+export type CID = string | object;
 
-export type Network = 'mainnet' | 'testnet'
+export type Network = "mainnet" | "testnet";
 
 export enum ProtocolIndicator {
-  ID,
-  SECP256K1,
-  ACTOR,
-  BLS,
+    ID,
+    SECP256K1,
+    ACTOR,
+    BLS,
 }
 
 export const CodeCID = {
-  PaymentChannel: 'fil/3/paymentchannel',
-}
+    PaymentChannel: "fil/3/paymentchannel",
+};
 
 export const INIT_ACTOR = {
-  mainnet: 'f01',
-  testnet: 't01',
-}
+    mainnet: "f01",
+    testnet: "t01",
+};
 
 export enum InitMethod {
-  None,
-  Constructor,
-  Exec,
+    None,
+    Constructor,
+    Exec,
 }
 
 export enum PaymentChannelMethod {
-  None,
-  Construtor,
-  UpdateChannelState,
-  Settle,
-  Collect,
+    None,
+    Construtor,
+    UpdateChannelState,
+    Settle,
+    Collect,
 }
 
 export enum MultisigMethod {
-  None,
-  Constructor,
-  Propose,
-  Approve,
-  Cancel,
-  AddSigner,
-  RemoveSigner,
-  SwapSigner,
-  ChangeNumApprovalsThreshhold,
+    None,
+    Constructor,
+    Propose,
+    Approve,
+    Cancel,
+    AddSigner,
+    RemoveSigner,
+    SwapSigner,
+    ChangeNumApprovalsThreshhold,
 }
 
 export class Message {
-  Version?: number
-  To!: Address
-  From!: Address
-  Nonce!: Nonce
-  Value!: BigNumber
-  GasLimit!: number
-  GasFeeCap!: BigNumber
-  GasPremium: BigNumber
-  Method!: number
-  Params!: string
+    Version?: number;
+    To!: Address;
+    From!: Address;
+    Nonce!: Nonce;
+    Value!: BigNumber;
+    GasLimit!: number;
+    GasFeeCap!: BigNumber;
+    GasPremium: BigNumber;
+    Method!: number;
+    Params!: string;
 }
 
-export type Voucher = string
+export type Voucher = string;
 
 export class VoucherSpec {}
 
-export type FilecoinNetwork = 'f' | 't'
+export type FilecoinNetwork = "f" | "t";
 
 export interface Signature {
-  Data: string
-  Type: number
+    Data: string;
+    Type: number;
 }
 
 export interface SignedMessage {
-  Message: Message
-  Signature: Signature
+    Message: Message;
+    Signature: Signature;
 }
 
 // export class SignedVoucher {
