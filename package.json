@@ -10,23 +10,22 @@
   "license": "ISC",
   "dependencies": {
     "@nodefactory/filecoin-address": "^1.0.1",
-    "@zondax/filecoin-signing-tools": "file:../filecoin-signing-tools/signer-npm/pkg",
     "base32-decode": "^1.0.0",
     "base32-encode": "^1.2.0",
     "bignumber.js": "^9.0.1",
     "blake2b": "^2.1.3",
     "blakejs": "^1.1.0",
     "bn.js": "^5.2.0",
-    "filecoin.js": "*",
+    "filecoin.js": "^0.0.5-alpha",
     "ipld-dag-cbor": "github:blitslabs/js-ipld-dag-cbor",
     "leb128": "^0.0.5",
     "lowercase-keys": "^1.0.1",
     "multihashing-async": "^2.1.2",
+    "prettier": "^2.2.1",
     "secp256k1": "^4.0.2"
   },
   "devDependencies": {
     "@types/node": "^15.0.1",
-    "nodemon": "^2.0.6",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.2"
   }

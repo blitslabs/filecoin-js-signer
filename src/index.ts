@@ -1,9 +1,9 @@
-import BigNumber from 'bignumber.js'
-import PaymentChannel from './PaymentChannel'
-import Tx from './Tx'
-import Wallet from './Wallet'
-import * as Utils from './Utils'
+
+import {Tx} from './transactions/tx'
+import {Wallet} from './wallet/wallet'
+import * as Utils from './utils/utils'
 import { HttpJsonRpcConnector, LotusClient } from 'filecoin.js'
+import {PaymentChannel} from "./payment-channels/payment-channel";
 
 export default class FilecoinSigner {
   public paych: PaymentChannel

@@ -1,7 +1,7 @@
-import { Network, PrivateKey } from './Types'
+import { Network, PrivateKey } from '../core/types/types'
 import { keyPairFromPrivateKey } from '@nodefactory/filecoin-address'
 
-class Wallet {
+export class Wallet {
 
  /**
   * @notice Recover key pair from private key
@@ -17,5 +17,3 @@ class Wallet {
     return keyPairFromPrivateKey(privateKey, network === 'mainnet' ? 'f' : 't')
   }
 }
-
-export default Wallet

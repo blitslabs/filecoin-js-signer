@@ -1,5 +1,5 @@
 import { keyPairFromPrivateKey } from '@nodefactory/filecoin-address'
-import Wallet from './Wallet'
+import Wallet from '../wallet/wallet'
 import { LotusClient } from 'filecoin.js'
 import secp256k1 from 'secp256k1'
 import lowercaseKeys from 'lowercase-keys'
@@ -11,7 +11,7 @@ import {
   bytesToAddress,
   addressAsBytes,
   serializeBigNum,
-} from './Utils'
+} from '../utils/utils'
 import {
   Message,
   PrivateKey,
@@ -22,11 +22,11 @@ import {
   CID,
   SignedMessage,
   FilecoinNetwork,
-} from './Types'
+} from '../core/types/types'
 import BigNumber from 'bignumber.js'
 import { publicKeyToAddress } from '@nodefactory/filecoin-address'
 
-class Tx {
+export class Tx {
   public lotus: LotusClient
 
   constructor(lotus: LotusClient) {
@@ -293,5 +293,3 @@ class Tx {
     )
   }
 }
-
-export default Tx

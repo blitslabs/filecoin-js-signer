@@ -16,14 +16,14 @@ import {
   PrivateKey,
   ProtocolIndicator,
   FilecoinNetwork,
-} from './Types'
+} from '../core/types/types'
 import { publicKeyToAddress } from '@nodefactory/filecoin-address'
 import {
   InvalidPayloadLength,
   ProtocolNotSupported,
   UnknownProtocolIndicator,
   InvalidChecksumAddress,
-} from './Errors'
+} from '../core/exceptions/errors'
 
 const CID_PREFIX = Buffer.from([0x01, 0x71, 0xa0, 0xe4, 0x02, 0x20])
 

@@ -21,21 +21,21 @@ import {
   PrivateKey,
   ProtocolIndicator,
   FilecoinNetwork,
-} from './Types'
+} from '../core/types/types'
 import {
   addressAsBytes,
   serializeBigNum,
   tryToPrivateKeyBuffer,
   getDigest,
-} from './Utils'
+} from '../utils/utils'
 
 import {
   InvalidVoucherSignature,
   ProtocolNotSupported,
   UnknownProtocolIndicator,
-} from './Errors'
+} from '../core/exceptions/errors'
 
-class PaymentChannel {
+export class PaymentChannel {
   /**
    * @notice Encodes the message's params required to create a payment channel
    * @param from The FIL address of the sender
@@ -348,5 +348,3 @@ class PaymentChannel {
     return message
   }
 }
-
-export default PaymentChannel
