@@ -211,15 +211,15 @@ export class PaymentChannel {
     }
 
     /**
-     *
-     * @param paymentChannelAddress
-     * @param from
-     * @param sv
-     * @param secret
-     * @param nonce
-     * @param gasLimit
-     * @param gasFeeCap
-     * @param gasPremium
+     * @notice Updates the payment channel given a voucher
+     * @param paymentChannelAddress Address of the payment channel
+     * @param from The FIL address of the sender
+     * @param sv Signed voucher encoded in base64
+     * @param secret The hashed secret required to redeem the voucher
+     * @param nonce The nonce of the sender's account
+     * @param gasLimit The gas limit value
+     * @param gasFeeCap The gas fee cap  value
+     * @param gasPremium The gas premium value
      * @returns
      */
     public updatePaymentChannel(
@@ -228,9 +228,9 @@ export class PaymentChannel {
         sv: string,
         secret: string,
         nonce: number,
-        gasLimit: number,
-        gasFeeCap: string,
-        gasPremium: string
+        gasLimit: number = 0,
+        gasFeeCap: string = "0",
+        gasPremium: string = "0"
     ): Message {
         // Convert base64 signed voucher to buffer
         const cborSignedVoucher = Buffer.from(sv, "base64");
@@ -239,7 +239,7 @@ export class PaymentChannel {
         const signedVoucher = cbor.util.deserialize(cborSignedVoucher);
 
         // Update payment channel params
-        const serialized_params = cbor.util.serialize([signedVoucher, Buffer.from(secret)]);
+        const serialized_params = cbor.util.serialize([signedVoucher, Buffer.from(secret, "hex")]);
 
         // Prepare unsigned message
         const message: Message = {
@@ -259,7 +259,7 @@ export class PaymentChannel {
 
     /**
      * @notice Settle payment channel
-     * @param paymentChannelAddress
+     * @param paymentChannelAddress The address of the payment channel
      * @param from
      * @param nonce
      * @param gasLimit
