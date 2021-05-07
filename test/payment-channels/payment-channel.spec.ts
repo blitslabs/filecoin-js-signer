@@ -67,10 +67,25 @@ describe("payment channels", () => {
         const secretPreImage = blake2b(new Uint8Array(32).length)
             .update(bSecret)
             .digest('hex');
-        const voucher = await paymentChannel.createVoucher(paychAddress, 0,0, secretPreImage, new BigNumber(10), 0, 0, 0);
+        const voucher = paymentChannel.createVoucher(paychAddress, 0,0, secretPreImage, new BigNumber(10), 0, 0, 0);
 
         const wasmResult = wasmSigningTools.signVoucher(voucher, Buffer.from(privateKey, "hex"));
         const result = paymentChannel.signVoucher(voucher, privateKey);
+
+        expect(result).toEqual(wasmResult);
+    });
+
+    it("should verify voucher signature", async () => {
+        const bSecret = Buffer.from("secret");
+        const secretPreImage = blake2b(new Uint8Array(32).length)
+            .update(bSecret)
+            .digest('hex');
+        const voucher = await paymentChannel.createVoucher(paychAddress, 0,0, secretPreImage, new BigNumber(10), 0, 0, 0);
+
+        const signedVoucher = paymentChannel.signVoucher(voucher, privateKey);
+
+        const wasmResult = wasmSigningTools.verifyVoucherSignature(signedVoucher, from);
+        const result = paymentChannel.verifyVoucherSignature(signedVoucher, from);
 
         expect(result).toEqual(wasmResult);
     });

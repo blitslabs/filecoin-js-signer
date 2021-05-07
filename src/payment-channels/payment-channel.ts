@@ -123,7 +123,7 @@ export class PaymentChannel {
      * @param privateKey The private key to sign the voucher with
      * @returns String The signed voucher encoded in base64
      */
-    public signVoucher(voucher: Voucher, privateKey: PrivateKey): String {
+    public signVoucher(voucher: Voucher, privateKey: PrivateKey): string {
         // Convert base64 voucher to buffer
         const cborUnsignedVoucher = Buffer.from(voucher, "base64");
 
@@ -162,7 +162,7 @@ export class PaymentChannel {
      * @param signerAddress The address to which compare the recovered public key
      * @returns Boolean Indicates wether the signature is valid or not
      */
-    public verifyVoucherSignature(sv: string, signerAddress: Address): Boolean {
+    public verifyVoucherSignature(sv: string, signerAddress: Address): boolean {
         // Convert base64 signed voucher to buffer
         const cborSignedVoucher = Buffer.from(sv, "base64");
         const signedVoucher = cbor.util.deserialize(cborSignedVoucher);
