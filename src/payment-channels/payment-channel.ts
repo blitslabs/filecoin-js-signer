@@ -58,7 +58,7 @@ export class PaymentChannel {
         to: Address,
         amount: TokenAmount,
         nonce: Nonce,
-        network: Network
+        network: Network = "testnet"
     ): Promise<Message> {
         const message: Message = {
             From: from,

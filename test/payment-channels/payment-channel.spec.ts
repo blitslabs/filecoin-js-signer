@@ -1,6 +1,8 @@
 import { PaymentChannel } from "../../src/payment-channels/payment-channel";
 import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
-import { CodeCID } from "../../src/core/types/types";
+import {CodeCID, INIT_ACTOR, InitMethod} from "../../src/core/types/types";
+import {serialize} from "v8";
+import BigNumber from "bignumber.js";
 
 describe("payment channels", () => {
     let paymentChannel: PaymentChannel;
@@ -25,5 +27,30 @@ describe("payment channels", () => {
         const result = await paymentChannel.createPayChMsgParams(address, to);
 
         expect(result).toEqual(wasmResult);
+    });
+
+    it("should create the payment channel creation message", async () => {
+        const amount = new BigNumber(100);
+        const params = {
+            code_cid: CodeCID.PaymentChannel,
+            constructor_params: Buffer.from(wasmSigningTools.serializeParams({ from: address, to })).toString("base64"),
+        };
+        const serializedParams = Buffer.from(wasmSigningTools.serializeParams(params)).toString("base64");
+
+        const result = await paymentChannel.createPayChMsg(address, to, amount, 0);
+
+        const expected = {
+            From: address,
+            To: "t01",
+            Nonce: 0,
+            Value: amount,
+            GasLimit: 10000000,
+            GasFeeCap: new BigNumber(0),
+            GasPremium: new BigNumber(0),
+            Method: 2,
+            Params: serializedParams,
+        }
+
+        expect(result).toEqual(expected);
     });
 });
