@@ -359,15 +359,15 @@ export class PaymentChannel {
         from: Address,
         privateKey: PrivateKey
     ): Promise<CID> {
-        let message = await this.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
+        let message = this.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
         return this.tx.sendMessage(message, privateKey);
     };
 
     /**
-     * @notice Creates the message to settle the payment channel
+     * @notice Updates the payment channel
      * @param paymentChannelAddress Address of the payment channel
      * @param from The FIL address of the sender
-     * @param sv Signed voucher encoded in base64
+     * @param signedVoucher Signed voucher encoded in base64
      * @param secret The hashed secret required to redeem the voucher
      * @param privateKey Private key of the sender
      * @returns
@@ -375,11 +375,27 @@ export class PaymentChannel {
     public async updatePaymentChannel (
         paymentChannelAddress: Address,
         from: Address,
-        sv: SignedVoucherBase64,
+        signedVoucher: SignedVoucherBase64,
         secret: HashedSecret,
         privateKey: PrivateKey
     ): Promise<CID> {
-        let message = await this.updatePaymentChannelMsg(paymentChannelAddress, from, sv, secret, 0);
+        let message = this.updatePaymentChannelMsg(paymentChannelAddress, from, signedVoucher, secret, 0);
+        return this.tx.sendMessage(message, privateKey);
+    };
+
+    /**
+     * @notice Collects the payment channel funds
+     * @param paymentChannelAddress Address of the payment channel
+     * @param from The FIL address of the sender
+     * @param privateKey Private key of the sender
+     * @returns
+     */
+    public async collectPaymentChannel (
+        paymentChannelAddress: Address,
+        from: Address,
+        privateKey: PrivateKey
+    ): Promise<CID> {
+        let message = this.collectPaymentChannelMsg(paymentChannelAddress, from, 0);
         return this.tx.sendMessage(message, privateKey);
     };
 }
