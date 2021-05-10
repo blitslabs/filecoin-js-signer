@@ -326,13 +326,13 @@ export class PaymentChannel {
      * @param gasPremium The gas premium value
      * @returns
      */
-    public collectPaymentChannel(
+    public collectPaymentChannelMsg(
         paymentChannelAddress: Address,
         from: Address,
         nonce: Nonce,
-        gasLimit: number,
-        gasFeeCap: string,
-        gasPremium: string
+        gasLimit: number = 0,
+        gasFeeCap: string = "0",
+        gasPremium: string = "0"
     ): Message {
         const message: Message = {
             From: from,

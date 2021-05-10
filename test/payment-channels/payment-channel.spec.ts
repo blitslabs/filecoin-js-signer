@@ -105,11 +105,27 @@ describe("payment channels", () => {
 
 
         it("should create the message to settle the payment channel", async () => {
-            const voucher = await paymentChannel.createVoucher(paychAddress, 0,0, secretPreImage, new BigNumber(10), 0, 0, 0);
-            const signedVoucher = paymentChannel.signVoucher(voucher, privateKey);
-
             const wasmResult = wasmSigningTools.settlePymtChan(paychAddress, from, 0);
             const result = paymentChannel.settlePaymentChannelMsg(paychAddress, from, 0);
+
+            const fixedResult = {
+                from: result.From,
+                to: result.To,
+                nonce: result.Nonce,
+                value: result.Value.toString(),
+                gaslimit: result.GasLimit,
+                gasfeecap: result.GasFeeCap.toString(),
+                gaspremium: result.GasPremium.toString(),
+                method: result.Method,
+                params: result.Params,
+            }
+
+            expect(fixedResult).toEqual(wasmResult);
+        });
+
+        it("should create the message to collect the payment channel", async () => {
+            const wasmResult = wasmSigningTools.collectPymtChan(paychAddress, from, 0);
+            const result = paymentChannel.collectPaymentChannelMsg(paychAddress, from, 0);
 
             const fixedResult = {
                 from: result.From,
