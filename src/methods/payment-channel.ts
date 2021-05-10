@@ -79,27 +79,6 @@ export class PaymentChannel {
         return message;
     }
 
-    /**
-     * @notice Creates the payment channel in the network
-     * @param from The FIL address of the sender
-     * @param to The FIL address of the recipient
-     * @param amount The amount of FIL to send
-     * @param privateKey Private key of the signer
-     * @param network The network of the message
-     * @returns
-     */
-    public createPaymentChannel = async (
-        from: Address,
-        to: Address,
-        amount: TokenAmount,
-        privateKey: PrivateKey,
-        network: Network = "testnet"
-    ): Promise<CID> => {
-        let message = await this.createPayChMsg(from, to, amount, 0, network);
-        return this.tx.sendMessage(message, privateKey);
-    };
-
-
 
     /**
      * @notice Creates a payment channel voucher
@@ -348,4 +327,40 @@ export class PaymentChannel {
 
         return message;
     }
+
+    /**
+     * @notice Creates the payment channel in the network
+     * @param from The FIL address of the sender
+     * @param to The FIL address of the recipient
+     * @param amount The amount of FIL to send
+     * @param privateKey Private key of the signer
+     * @param network The network of the message
+     * @returns
+     */
+    public async createPaymentChannel (
+        from: Address,
+        to: Address,
+        amount: TokenAmount,
+        privateKey: PrivateKey,
+        network: Network = "testnet"
+    ): Promise<CID> {
+        let message = await this.createPayChMsg(from, to, amount, 0, network);
+        return this.tx.sendMessage(message, privateKey);
+    };
+
+    /**
+     * @notice Creates the message to settle the payment channel
+     * @param paymentChannelAddress The address of the payment channel
+     * @param from Address of the sender
+     * @param privateKey Private key of the sender
+     * @returns
+     */
+    public async settlePaymentChannel (
+        paymentChannelAddress: Address,
+        from: Address,
+        privateKey: PrivateKey
+    ): Promise<CID> {
+        let message = await this.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
+        return this.tx.sendMessage(message, privateKey);
+    };
 }
