@@ -21,10 +21,7 @@ import BigNumber from "bignumber.js";
 import { publicKeyToAddress } from "@nodefactory/filecoin-address";
 
 export class Tx {
-    public lotus: LotusClient;
-
-    constructor(lotus: LotusClient) {
-        this.lotus = lotus;
+    constructor(private readonly lotus: LotusClient) {
     }
 
     /**

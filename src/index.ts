@@ -5,11 +5,12 @@ import { HttpJsonRpcConnector, LotusClient } from "filecoin.js";
 import { PaymentChannel } from "./methods/payment-channel";
 
 export class FilecoinSigner {
-    public paych: PaymentChannel;
-    public tx: Tx;
-    public wallet: Wallet;
-    public lotus: LotusClient;
-    public utils: any;
+    private readonly lotus: LotusClient;
+
+    public readonly paych: PaymentChannel;
+    public readonly tx: Tx;
+    public readonly wallet: Wallet;
+    public readonly utils: any;
 
     constructor(rpcUrl?: string, token?: string) {
         const connector = new HttpJsonRpcConnector({ url: rpcUrl, token });
