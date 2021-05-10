@@ -1,8 +1,8 @@
-import { Tx } from "./transactions/tx";
-import { Wallet } from "./wallet/wallet";
-import * as Utils from "./utils/utils";
+import { Tx } from "./methods/tx";
+import { Wallet } from "./methods/wallet";
+import * as Utils from "./methods/utils";
 import { HttpJsonRpcConnector, LotusClient } from "filecoin.js";
-import { PaymentChannel } from "./payment-channels/payment-channel";
+import { PaymentChannel } from "./methods/payment-channel";
 
 export class FilecoinSigner {
     public paych: PaymentChannel;

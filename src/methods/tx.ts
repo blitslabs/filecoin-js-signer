@@ -1,11 +1,11 @@
 import { keyPairFromPrivateKey } from "@nodefactory/filecoin-address";
-import Wallet from "../wallet/wallet";
+import Wallet from "./wallet";
 import { LotusClient } from "filecoin.js";
 import secp256k1 from "secp256k1";
 import lowercaseKeys from "lowercase-keys";
 import cbor from "ipld-dag-cbor";
 import BN from "bn.js";
-import { tryToPrivateKeyBuffer, getDigest, bytesToAddress, addressAsBytes, serializeBigNum } from "../utils/utils";
+import { tryToPrivateKeyBuffer, getDigest, bytesToAddress, addressAsBytes, serializeBigNum } from "./utils";
 import {
     Message,
     PrivateKey,

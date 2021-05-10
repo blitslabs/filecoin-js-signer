@@ -20,7 +20,7 @@ import {
     ProtocolIndicator,
     FilecoinNetwork,
 } from "../core/types/types";
-import { addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer } from "../utils/utils";
+import { addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer } from "./utils";
 
 import { InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator } from "../core/exceptions/errors";
 

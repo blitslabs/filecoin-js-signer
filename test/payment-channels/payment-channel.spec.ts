@@ -1,4 +1,4 @@
-import { PaymentChannel } from "../../src/payment-channels/payment-channel";
+import { PaymentChannel } from "../../src/methods/payment-channel";
 import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
 import {CodeCID} from "../../src/core/types/types";
 import BigNumber from "bignumber.js";
