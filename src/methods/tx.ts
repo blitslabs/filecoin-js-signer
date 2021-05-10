@@ -1,5 +1,5 @@
 import { keyPairFromPrivateKey } from "@nodefactory/filecoin-address";
-import Wallet from "./wallet";
+import { Wallet } from "./wallet";
 import { LotusClient } from "filecoin.js";
 import secp256k1 from "secp256k1";
 import lowercaseKeys from "lowercase-keys";
@@ -137,8 +137,8 @@ export class Tx {
         }
 
         const message = {
-            to: bytesToAddress(decoded[1], network === "testnet" ? true : false),
-            from: bytesToAddress(decoded[2], network === "testnet" ? true : false),
+            to: bytesToAddress(decoded[1], network === "testnet"),
+            from: bytesToAddress(decoded[2], network === "testnet"),
             nonce: decoded[3],
             value: new BN(decoded[4].toString("hex"), 16).toString(10),
             gaslimit: decoded[5],
