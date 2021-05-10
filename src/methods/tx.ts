@@ -48,6 +48,8 @@ export class Tx {
         // Sign Message
         const signedMessage = JSON.parse(this.transactionSignLotus(unsignedMessage, privateKey));
 
+        console.log({signedMessage})
+
         // Send Message
         const CID = await this.clientProvider.mpool.push(signedMessage);
 

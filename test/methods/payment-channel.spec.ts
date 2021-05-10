@@ -37,7 +37,7 @@ describe("payment channels", () => {
             };
             const serializedParams = Buffer.from(wasmSigningTools.serializeParams(params)).toString("base64");
 
-            const result = await paymentChannel.createPayChMsg(from, to, amount, 0);
+            const result = await paymentChannel.createPayChMsg(from, to, amount, 0, "testnet");
 
             const expected = {
                 From: from,

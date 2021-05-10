@@ -10,7 +10,7 @@ export class FilecoinSigner {
     public readonly paych: PaymentChannel;
     public readonly tx: Tx;
     public readonly wallet: Wallet;
-    public readonly utils: any;
+    public readonly utils: typeof Utils;
 
     constructor(rpcUrl?: string, token?: string) {
         const connector = new HttpJsonRpcConnector({ url: rpcUrl, token });
