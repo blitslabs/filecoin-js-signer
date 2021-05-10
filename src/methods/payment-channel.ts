@@ -15,10 +15,9 @@ import {
     PaymentChannelMethod,
     Message,
     Network,
-    Voucher,
     PrivateKey,
     ProtocolIndicator,
-    FilecoinNetwork, CID,
+    FilecoinNetwork, CID, SignedVoucherBase64, HashedSecret, VoucherBase64,
 } from "../core/types/types";
 import { addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer } from "./utils";
 
@@ -90,7 +89,7 @@ export class PaymentChannel {
      * @param lane The lane of the payment channel this voucher is valid for
      * @param voucherNonce The nonce of the voucher
      * @param minSettleHeight The minimum settle height
-     * @returns Voucher Unsigned voucher encoded in base64
+     * @returns VoucherBase64 Unsigned voucher encoded in base64
      */
 
     public createVoucher(
@@ -102,7 +101,7 @@ export class PaymentChannel {
         lane: number,
         voucherNonce: number,
         minSettleHeight: number
-    ): Voucher {
+    ): VoucherBase64 {
         const voucher = [
             addressAsBytes(paymentChannelAddress),
             timeLockMin,
@@ -128,7 +127,7 @@ export class PaymentChannel {
      * @param privateKey The private key to sign the voucher with
      * @returns String The signed voucher encoded in base64
      */
-    public signVoucher(voucher: Voucher, privateKey: PrivateKey): string {
+    public signVoucher(voucher: VoucherBase64, privateKey: PrivateKey): SignedVoucherBase64 {
         // Convert base64 voucher to buffer
         const cborUnsignedVoucher = Buffer.from(voucher, "base64");
 
@@ -167,7 +166,7 @@ export class PaymentChannel {
      * @param signerAddress The address to which compare the recovered public key
      * @returns Boolean Indicates whether the signature is valid or not
      */
-    public verifyVoucherSignature(sv: string, signerAddress: Address): boolean {
+    public verifyVoucherSignature(sv: SignedVoucherBase64, signerAddress: Address): boolean {
         // Convert base64 signed voucher to buffer
         const cborSignedVoucher = Buffer.from(sv, "base64");
         const signedVoucher = cbor.util.deserialize(cborSignedVoucher);
@@ -230,8 +229,8 @@ export class PaymentChannel {
     public updatePaymentChannelMsg(
         paymentChannelAddress: Address,
         from: Address,
-        sv: string,
-        secret: string,
+        sv: SignedVoucherBase64,
+        secret: HashedSecret,
         nonce: number,
         gasLimit: number = 0,
         gasFeeCap: string = "0",
@@ -361,6 +360,26 @@ export class PaymentChannel {
         privateKey: PrivateKey
     ): Promise<CID> {
         let message = await this.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
+        return this.tx.sendMessage(message, privateKey);
+    };
+
+    /**
+     * @notice Creates the message to settle the payment channel
+     * @param paymentChannelAddress Address of the payment channel
+     * @param from The FIL address of the sender
+     * @param sv Signed voucher encoded in base64
+     * @param secret The hashed secret required to redeem the voucher
+     * @param privateKey Private key of the sender
+     * @returns
+     */
+    public async updatePaymentChannel (
+        paymentChannelAddress: Address,
+        from: Address,
+        sv: SignedVoucherBase64,
+        secret: HashedSecret,
+        privateKey: PrivateKey
+    ): Promise<CID> {
+        let message = await this.updatePaymentChannelMsg(paymentChannelAddress, from, sv, secret, 0);
         return this.tx.sendMessage(message, privateKey);
     };
 }

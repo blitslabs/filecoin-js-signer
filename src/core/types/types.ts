@@ -14,6 +14,12 @@ export type CID = string | object;
 
 export type Network = "mainnet" | "testnet";
 
+export type SignedVoucherBase64 = string;
+
+export type VoucherBase64 = string;
+
+export type HashedSecret = string;
+
 export enum ProtocolIndicator {
     ID,
     SECP256K1,
