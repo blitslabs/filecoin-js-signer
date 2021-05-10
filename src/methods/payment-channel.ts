@@ -18,13 +18,17 @@ import {
     Voucher,
     PrivateKey,
     ProtocolIndicator,
-    FilecoinNetwork,
+    FilecoinNetwork, CID,
 } from "../core/types/types";
 import { addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer } from "./utils";
 
 import { InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator } from "../core/exceptions/errors";
+import {Tx} from "./tx";
 
 export class PaymentChannel {
+    constructor(private readonly tx: Tx) {
+    }
+
     /**
      * @notice Encodes the message's params required to create a payment channel
      * @param from The FIL address of the sender
@@ -74,6 +78,28 @@ export class PaymentChannel {
 
         return message;
     }
+
+    /**
+     * @notice Creates the payment channel in the network
+     * @param from The FIL address of the sender
+     * @param to The FIL address of the recipient
+     * @param amount The amount of FIL to send
+     * @param privateKey Private key of the signer
+     * @param network The network of the message
+     * @returns
+     */
+    public createPaymentChannel = async (
+        from: Address,
+        to: Address,
+        amount: TokenAmount,
+        privateKey: PrivateKey,
+        network: Network = "testnet"
+    ): Promise<CID> => {
+        let message = await this.createPayChMsg(from, to, amount, 0, network);
+        return this.tx.sendMessage(message, privateKey);
+    };
+
+
 
     /**
      * @notice Creates a payment channel voucher
@@ -160,7 +186,7 @@ export class PaymentChannel {
      * @notice Verify the signature of a signed voucher
      * @param sv Signed voucher encoded in base64
      * @param signerAddress The address to which compare the recovered public key
-     * @returns Boolean Indicates wether the signature is valid or not
+     * @returns Boolean Indicates whether the signature is valid or not
      */
     public verifyVoucherSignature(sv: string, signerAddress: Address): boolean {
         // Convert base64 signed voucher to buffer
@@ -211,7 +237,7 @@ export class PaymentChannel {
     }
 
     /**
-     * @notice Updates the payment channel given a voucher
+     * @notice Create the message to update the payment channel given a voucher
      * @param paymentChannelAddress Address of the payment channel
      * @param from The FIL address of the sender
      * @param sv Signed voucher encoded in base64
@@ -222,7 +248,7 @@ export class PaymentChannel {
      * @param gasPremium The gas premium value
      * @returns
      */
-    public updatePaymentChannel(
+    public updatePaymentChannelMsg(
         paymentChannelAddress: Address,
         from: Address,
         sv: string,
@@ -258,16 +284,16 @@ export class PaymentChannel {
     }
 
     /**
-     * @notice Settle payment channel
+     * @notice Creates the message to settle the payment channel
      * @param paymentChannelAddress The address of the payment channel
-     * @param from
-     * @param nonce
-     * @param gasLimit
-     * @param gasFeeCap
-     * @param gasPremium
+     * @param from Address of the sender
+     * @param nonce The nonce of the sender's account
+     * @param gasLimit The gas limit value
+     * @param gasFeeCap The gas fee cap  value
+     * @param gasPremium The gas premium value
      * @returns
      */
-    public settlePaymentChannel(
+    public settlePaymentChannelMsg(
         paymentChannelAddress: Address,
         from: Address,
         nonce: Nonce,
@@ -291,13 +317,13 @@ export class PaymentChannel {
     }
 
     /**
-     * @notice Collect Payment Channel
-     * @param paymentChannelAddress
-     * @param from
-     * @param nonce
-     * @param gasLimit
-     * @param gasFeeCap
-     * @param gasPremium
+     * @notice Creates the message to collect the payment channel
+     * @param paymentChannelAddress The address of the payment channel
+     * @param from Address of the sender
+     * @param nonce The nonce of the sender's account
+     * @param gasLimit The gas limit value
+     * @param gasFeeCap The gas fee cap  value
+     * @param gasPremium The gas premium value
      * @returns
      */
     public collectPaymentChannel(

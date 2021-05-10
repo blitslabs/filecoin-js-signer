@@ -31,8 +31,8 @@ export class Tx {
      * @notice Send a custom Message
      * @param message Custom unsigned Message
      * @param privateKey Private Key encoded in hex or base64
-     * @param updateMsgNonce Boolean indicating wether the message's nonce should be updated or not
-     * @param waitMsg Boolean indicating wether to wait for the message to confirm or not
+     * @param updateMsgNonce Boolean indicating whether the message's nonce should be updated or not
+     * @param waitMsg Boolean indicating whether to wait for the message to confirm or not
      * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async sendMessage(

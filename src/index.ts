@@ -14,8 +14,8 @@ export class FilecoinSigner {
     constructor(rpcUrl?: string, token?: string) {
         const connector = new HttpJsonRpcConnector({ url: rpcUrl, token });
         this.lotus = new LotusClient(connector);
-        this.paych = new PaymentChannel();
         this.tx = new Tx(this.lotus);
+        this.paych = new PaymentChannel(this.tx);
         this.wallet = new Wallet();
         this.utils = Utils;
     }
