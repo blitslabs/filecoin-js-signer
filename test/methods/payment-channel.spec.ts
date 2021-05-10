@@ -1,8 +1,8 @@
 import { PaymentChannel } from "../../src/methods/payment-channel";
 import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
-import {CodeCID} from "../../src/core/types/types";
+import { CodeCID } from "../../src/core/types/types";
 import BigNumber from "bignumber.js";
-import blake2b from 'blake2b'
+import blake2b from "blake2b";
 
 describe("payment channels", () => {
     let paymentChannel: PaymentChannel;
@@ -10,9 +10,7 @@ describe("payment channels", () => {
     const privateKey = "b144cf14dbd413aaefaa4658bca06733aa33386e651ab9816954807c74517bf1";
     const to = "t1aexhfgaaowzz2wryy7b6q5y3zs7tjhybfmqetta";
     const paychAddress = "t01312";
-    const secretPreImage = blake2b(new Uint8Array(32).length)
-        .update(Buffer.from("secret"))
-        .digest('hex');
+    const secretPreImage = blake2b(new Uint8Array(32).length).update(Buffer.from("secret")).digest("hex");
 
     describe("message creation", () => {
         beforeEach(() => {
@@ -51,19 +49,37 @@ describe("payment channels", () => {
                 GasPremium: new BigNumber(0),
                 Method: 2,
                 Params: serializedParams,
-            }
+            };
 
             expect(result).toEqual(expected);
         });
 
         it("should create a serialized voucher", async () => {
-            const wasmResult = wasmSigningTools.createVoucher(paychAddress, "0","0", secretPreImage, "10", "0", "0", "0");
-            const result = paymentChannel.createVoucher(paychAddress, 0,0, secretPreImage, new BigNumber(10), 0, 0, 0);
+            const wasmResult = wasmSigningTools.createVoucher(
+                paychAddress,
+                "0",
+                "0",
+                secretPreImage,
+                "10",
+                "0",
+                "0",
+                "0"
+            );
+            const result = paymentChannel.createVoucher(paychAddress, 0, 0, secretPreImage, new BigNumber(10), 0, 0, 0);
             expect(result).toEqual(wasmResult);
         });
 
         it("should sign voucher voucher", async () => {
-            const voucher = paymentChannel.createVoucher(paychAddress, 0,0, secretPreImage, new BigNumber(10), 0, 0, 0);
+            const voucher = paymentChannel.createVoucher(
+                paychAddress,
+                0,
+                0,
+                secretPreImage,
+                new BigNumber(10),
+                0,
+                0,
+                0
+            );
 
             const wasmResult = wasmSigningTools.signVoucher(voucher, Buffer.from(privateKey, "hex"));
             const result = paymentChannel.signVoucher(voucher, privateKey);
@@ -72,7 +88,16 @@ describe("payment channels", () => {
         });
 
         it("should verify voucher signature", async () => {
-            const voucher = await paymentChannel.createVoucher(paychAddress, 0,0, secretPreImage, new BigNumber(10), 0, 0, 0);
+            const voucher = await paymentChannel.createVoucher(
+                paychAddress,
+                0,
+                0,
+                secretPreImage,
+                new BigNumber(10),
+                0,
+                0,
+                0
+            );
             const signedVoucher = paymentChannel.signVoucher(voucher, privateKey);
 
             const wasmResult = wasmSigningTools.verifyVoucherSignature(signedVoucher, from);
@@ -82,7 +107,16 @@ describe("payment channels", () => {
         });
 
         it("should create the message to update the payment channel given a voucher", async () => {
-            const voucher = await paymentChannel.createVoucher(paychAddress, 0,0, secretPreImage, new BigNumber(10), 0, 0, 0);
+            const voucher = await paymentChannel.createVoucher(
+                paychAddress,
+                0,
+                0,
+                secretPreImage,
+                new BigNumber(10),
+                0,
+                0,
+                0
+            );
             const signedVoucher = paymentChannel.signVoucher(voucher, privateKey);
 
             const wasmResult = wasmSigningTools.updatePymtChan(paychAddress, from, signedVoucher, secretPreImage, 0);
@@ -98,11 +132,10 @@ describe("payment channels", () => {
                 gaspremium: result.GasPremium.toString(),
                 method: result.Method,
                 params: result.Params,
-            }
+            };
 
             expect(fixedResult).toEqual(wasmResult);
         });
-
 
         it("should create the message to settle the payment channel", async () => {
             const wasmResult = wasmSigningTools.settlePymtChan(paychAddress, from, 0);
@@ -118,7 +151,7 @@ describe("payment channels", () => {
                 gaspremium: result.GasPremium.toString(),
                 method: result.Method,
                 params: result.Params,
-            }
+            };
 
             expect(fixedResult).toEqual(wasmResult);
         });
@@ -137,10 +170,9 @@ describe("payment channels", () => {
                 gaspremium: result.GasPremium.toString(),
                 method: result.Method,
                 params: result.Params,
-            }
+            };
 
             expect(fixedResult).toEqual(wasmResult);
         });
-    })
-
+    });
 });

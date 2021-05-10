@@ -17,16 +17,19 @@ import {
     Network,
     PrivateKey,
     ProtocolIndicator,
-    FilecoinNetwork, CID, SignedVoucherBase64, HashedSecret, VoucherBase64,
+    FilecoinNetwork,
+    CID,
+    SignedVoucherBase64,
+    HashedSecret,
+    VoucherBase64,
 } from "../core/types/types";
 import { addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer } from "./utils";
 
 import { InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator } from "../core/exceptions/errors";
-import {Tx} from "./tx";
+import { Tx } from "./tx";
 
 export class PaymentChannel {
-    constructor(private readonly tx: Tx) {
-    }
+    constructor(private readonly tx: Tx) {}
 
     /**
      * @notice Encodes the message's params required to create a payment channel
@@ -61,7 +64,7 @@ export class PaymentChannel {
         to: Address,
         amount: TokenAmount,
         nonce: Nonce,
-        network: Network = "testnet"
+        network: Network = "mainnet"
     ): Promise<Message> {
         const message: Message = {
             From: from,
@@ -77,7 +80,6 @@ export class PaymentChannel {
 
         return message;
     }
-
 
     /**
      * @notice Creates a payment channel voucher
@@ -336,16 +338,16 @@ export class PaymentChannel {
      * @param network The network of the message
      * @returns
      */
-    public async createPaymentChannel (
+    public async createPaymentChannel(
         from: Address,
         to: Address,
         amount: TokenAmount,
         privateKey: PrivateKey,
-        network: Network = "testnet"
+        network: Network = "mainnet"
     ): Promise<CID> {
         let message = await this.createPayChMsg(from, to, amount, 0, network);
         return this.tx.sendMessage(message, privateKey);
-    };
+    }
 
     /**
      * @notice Creates the message to settle the payment channel
@@ -354,14 +356,14 @@ export class PaymentChannel {
      * @param privateKey Private key of the sender
      * @returns
      */
-    public async settlePaymentChannel (
+    public async settlePaymentChannel(
         paymentChannelAddress: Address,
         from: Address,
         privateKey: PrivateKey
     ): Promise<CID> {
         let message = this.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
         return this.tx.sendMessage(message, privateKey);
-    };
+    }
 
     /**
      * @notice Updates the payment channel
@@ -372,7 +374,7 @@ export class PaymentChannel {
      * @param privateKey Private key of the sender
      * @returns
      */
-    public async updatePaymentChannel (
+    public async updatePaymentChannel(
         paymentChannelAddress: Address,
         from: Address,
         signedVoucher: SignedVoucherBase64,
@@ -381,7 +383,7 @@ export class PaymentChannel {
     ): Promise<CID> {
         let message = this.updatePaymentChannelMsg(paymentChannelAddress, from, signedVoucher, secret, 0);
         return this.tx.sendMessage(message, privateKey);
-    };
+    }
 
     /**
      * @notice Collects the payment channel funds
@@ -390,12 +392,12 @@ export class PaymentChannel {
      * @param privateKey Private key of the sender
      * @returns
      */
-    public async collectPaymentChannel (
+    public async collectPaymentChannel(
         paymentChannelAddress: Address,
         from: Address,
         privateKey: PrivateKey
     ): Promise<CID> {
         let message = this.collectPaymentChannelMsg(paymentChannelAddress, from, 0);
         return this.tx.sendMessage(message, privateKey);
-    };
+    }
 }

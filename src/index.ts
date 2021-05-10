@@ -17,7 +17,7 @@ export class FilecoinSigner {
         this.lotus = new LotusClient(connector);
         this.tx = new Tx(this.lotus);
         this.paych = new PaymentChannel(this.tx);
-        this.wallet = new Wallet();
+        this.wallet = new Wallet(this.tx);
         this.utils = Utils;
     }
 }

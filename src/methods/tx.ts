@@ -21,8 +21,7 @@ import BigNumber from "bignumber.js";
 import { publicKeyToAddress } from "@nodefactory/filecoin-address";
 
 export class Tx {
-    constructor(private readonly lotus: LotusClient) {
-    }
+    constructor(public readonly clientProvider: LotusClient) {}
 
     /**
      * @notice Send a custom Message
@@ -40,20 +39,20 @@ export class Tx {
     ): Promise<CID | object> {
         if (updateMsgNonce) {
             // Get Address Nonce
-            message.Nonce = await this.lotus.mpool.getNonce(message.From);
+            message.Nonce = await this.clientProvider.mpool.getNonce(message.From);
         }
 
         // Get Unsigned Message with Gas Estimation
-        const unsignedMessage = await this.lotus.gasEstimate.messageGas(message);
+        const unsignedMessage = await this.clientProvider.gasEstimate.messageGas(message);
 
         // Sign Message
         const signedMessage = JSON.parse(this.transactionSignLotus(unsignedMessage, privateKey));
 
         // Send Message
-        const CID = await this.lotus.mpool.push(signedMessage);
+        const CID = await this.clientProvider.mpool.push(signedMessage);
 
         if (waitMsg) {
-            return await this.lotus.state.waitMsg(CID, 0);
+            return await this.clientProvider.state.waitMsg(CID, 0);
         }
 
         return CID;
@@ -82,12 +81,12 @@ export class Tx {
         }
 
         // Recover keys from private key
-        const keys = new Wallet().keyRecover(privateKey, network);
+        const keys = new Wallet(this).keyRecover(privateKey, network);
 
         const from = keys.address;
 
         // Get Address Nonce
-        const nonce = await this.lotus.mpool.getNonce(from);
+        const nonce = await this.clientProvider.mpool.getNonce(from);
 
         // Prepare Message
         const message: Message = {
@@ -103,16 +102,16 @@ export class Tx {
         };
 
         // Get Unsigned Message with Gas Estimation
-        const unsignedMessage = await this.lotus.gasEstimate.messageGas(message);
+        const unsignedMessage = await this.clientProvider.gasEstimate.messageGas(message);
 
         // Sign Message
         const signedMessage = JSON.parse(this.transactionSignLotus(unsignedMessage, privateKey));
 
         // Send Message
-        const CID = await this.lotus.mpool.push(signedMessage);
+        const CID = await this.clientProvider.mpool.push(signedMessage);
 
         if (waitMsg) {
-            return await this.lotus.state.waitMsg(CID, 0);
+            return await this.clientProvider.state.waitMsg(CID, 0);
         }
 
         return CID;
