@@ -1,9 +1,9 @@
 import BigNumber from "bignumber.js";
 import cbor from "ipld-dag-cbor";
-import {multihash} from "multihashing-async";
+import { multihash } from "multihashing-async";
 import secp256k1 from "secp256k1";
 import blake2b from "blake2b";
-import {publicKeyToAddress} from "@nodefactory/filecoin-address";
+import { publicKeyToAddress } from "@nodefactory/filecoin-address";
 import {
     Address,
     CID,
@@ -23,9 +23,9 @@ import {
     TokenAmount,
     VoucherBase64,
 } from "../../core/types/types";
-import {addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer} from "./utils";
+import { addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer } from "./utils";
 
-import {InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator} from "../../core/exceptions/errors";
+import { InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator } from "../../core/exceptions/errors";
 
 export class PaymentChannelTools {
     /**

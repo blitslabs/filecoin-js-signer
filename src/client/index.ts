@@ -1,9 +1,9 @@
-import {HttpJsonRpcConnector, LotusClient} from "filecoin.js";
+import { HttpJsonRpcConnector, LotusClient } from "filecoin.js";
 import * as Utils from "../signing-tools/methods/utils";
-import {PaymentChannel} from "./methods/payment-channel";
-import {Tx} from "./methods/tx";
-import {Wallet} from "./methods/wallet";
-import {FilecoinSigner} from "../signing-tools";
+import { PaymentChannel } from "./methods/payment-channel";
+import { Tx } from "./methods/tx";
+import { Wallet } from "./methods/wallet";
+import { FilecoinSigner } from "../signing-tools";
 
 export class FilecoinClient {
     private readonly lotus: LotusClient;

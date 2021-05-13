@@ -2,11 +2,10 @@ import { Address, CID, Network, PrivateKey, TokenAmount } from "../../core/types
 import { KeyPair } from "@nodefactory/filecoin-address";
 import { Tx } from "./tx";
 import BigNumber from "bignumber.js";
-import {FilecoinSigner} from "../../signing-tools";
+import { FilecoinSigner } from "../../signing-tools";
 
 export class Wallet {
-    constructor(private readonly tx: Tx,
-                private readonly signingTools: FilecoinSigner) {}
+    constructor(private readonly tx: Tx, private readonly signingTools: FilecoinSigner) {}
 
     /**
      * @notice Recovers key pair from private key

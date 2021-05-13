@@ -1,8 +1,8 @@
 import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
-import {CodeCID} from "../../src/core/types/types";
+import { CodeCID } from "../../../src/core/types/types";
 import BigNumber from "bignumber.js";
 import blake2b from "blake2b";
-import {PaymentChannelTools} from "../../src/signing-tools/methods/payment-channel";
+import { PaymentChannelTools } from "../../../src/signing-tools/methods/payment-channel";
 
 describe("payment channels", () => {
     let paymentChannel: PaymentChannelTools;

@@ -7,8 +7,8 @@ import {
     SignedVoucherBase64,
     TokenAmount,
 } from "../../core/types/types";
-import {Tx} from "./tx";
-import {FilecoinSigner} from "../../signing-tools";
+import { Tx } from "./tx";
+import { FilecoinSigner } from "../../signing-tools";
 
 export class PaymentChannel {
     constructor(private readonly tx: Tx, private readonly signingTools: FilecoinSigner) {}
@@ -65,7 +65,13 @@ export class PaymentChannel {
         secret: HashedSecret,
         privateKey: PrivateKey
     ): Promise<CID> {
-        let message = this.signingTools.paych.updatePaymentChannelMsg(paymentChannelAddress, from, signedVoucher, secret, 0);
+        let message = this.signingTools.paych.updatePaymentChannelMsg(
+            paymentChannelAddress,
+            from,
+            signedVoucher,
+            secret,
+            0
+        );
         return this.tx.sendMessage(message, privateKey);
     }
 

@@ -1,18 +1,10 @@
 import { LotusClient } from "filecoin.js";
-import {
-    Message,
-    PrivateKey,
-    Network,
-    Address,
-    TokenAmount,
-    CID,
-} from "../../core/types/types";
+import { Message, PrivateKey, Network, Address, TokenAmount, CID } from "../../core/types/types";
 import BigNumber from "bignumber.js";
-import {FilecoinSigner} from "../../signing-tools";
+import { FilecoinSigner } from "../../signing-tools";
 
 export class Tx {
-    constructor(public readonly clientProvider: LotusClient,
-                private readonly signingTools: FilecoinSigner) {}
+    constructor(public readonly clientProvider: LotusClient, private readonly signingTools: FilecoinSigner) {}
 
     /**
      * @notice Send a custom Message
@@ -33,7 +25,7 @@ export class Tx {
             message.Nonce = await this.clientProvider.mpool.getNonce(message.From);
         }
 
-       return this.pushMessage(message, privateKey, waitMsg);
+        return this.pushMessage(message, privateKey, waitMsg);
     }
 
     /**

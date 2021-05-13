@@ -29,12 +29,12 @@ export enum ProtocolIndicator {
 
 export enum CodeCID {
     PaymentChannel = "fil/4/paymentchannel",
-};
+}
 
 export enum INIT_ACTOR {
     mainnet = "f01",
     testnet = "t01",
-};
+}
 
 export enum InitMethod {
     None,
