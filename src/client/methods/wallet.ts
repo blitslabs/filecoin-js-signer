@@ -1,11 +1,12 @@
-import { Address, CID, Network, PrivateKey, TokenAmount } from "../core/types/types";
-import { KeyPair, keyPairFromPrivateKey } from "@nodefactory/filecoin-address";
+import { Address, CID, Network, PrivateKey, TokenAmount } from "../../core/types/types";
+import { KeyPair } from "@nodefactory/filecoin-address";
 import { Tx } from "./tx";
 import BigNumber from "bignumber.js";
-import { generateMnemonic } from "bip39";
+import {FilecoinSigner} from "../../signing-tools";
 
 export class Wallet {
-    constructor(private readonly tx: Tx) {}
+    constructor(private readonly tx: Tx,
+                private readonly signingTools: FilecoinSigner) {}
 
     /**
      * @notice Recovers key pair from private key
@@ -14,11 +15,16 @@ export class Wallet {
      * @returns Key pair
      */
     public keyRecover(privateKey: PrivateKey, network: Network = "mainnet"): KeyPair {
-        if (privateKey.slice(-1) === "=") {
-            privateKey = Buffer.from(privateKey, "base64").toString("hex");
-        }
+        return this.signingTools.wallet.keyRecover(privateKey, network);
+    }
 
-        return keyPairFromPrivateKey(privateKey, network === "mainnet" ? "f" : "t");
+    /**
+     * @notice Generates a mnemonic
+     * @param strength Strength of the mnemonic
+     * @returns Mnemonic
+     */
+    public generateMnemonic(strength = 128): string {
+        return this.signingTools.wallet.generateMnemonic(strength);
     }
 
     /**
@@ -30,14 +36,6 @@ export class Wallet {
         const balance = await this.tx.clientProvider.wallet.balance(address);
         const d = new BigNumber(10).pow(18);
         return new BigNumber(balance).multipliedBy(d);
-    }
-
-    /**
-     * @notice Generates 12 words as a mnemonic
-     * @returns 12 words separated by an space
-     */
-    public generateMnemonic(): string {
-        return generateMnemonic(128);
     }
 
     /**

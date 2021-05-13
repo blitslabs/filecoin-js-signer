@@ -1,4 +1,4 @@
-import {FilecoinSigner} from "../src";
+import {FilecoinSigner} from "../src/signing-tools";
 import BigNumber from "bignumber.js";
 
 jest.setTimeout(10000);

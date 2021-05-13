@@ -1,11 +1,11 @@
-import {PaymentChannel} from "../../src/methods/payment-channel";
 import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
 import {CodeCID} from "../../src/core/types/types";
 import BigNumber from "bignumber.js";
 import blake2b from "blake2b";
+import {PaymentChannelTools} from "../../src/signing-tools/methods/payment-channel";
 
 describe("payment channels", () => {
-    let paymentChannel: PaymentChannel;
+    let paymentChannel: PaymentChannelTools;
     const from = "t1vwxualsf6gx5jjl2fp7zh7gy6ailk4hnwgkroci";
     const privateKey = "b144cf14dbd413aaefaa4658bca06733aa33386e651ab9816954807c74517bf1";
     const to = "t1aexhfgaaowzz2wryy7b6q5y3zs7tjhybfmqetta";
@@ -14,7 +14,7 @@ describe("payment channels", () => {
 
     describe("message creation", () => {
         beforeEach(() => {
-            paymentChannel = new PaymentChannel(undefined);
+            paymentChannel = new PaymentChannelTools();
         });
 
         xit("should encode the payment channel constructor params", async () => {

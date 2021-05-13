@@ -11,14 +11,14 @@ import base32Encode from "base32-encode";
 import BN from "bn.js";
 import assert from "assert";
 import secp256k1 from "secp256k1";
-import { Address, PrivateKey, ProtocolIndicator, FilecoinNetwork } from "../core/types/types";
+import { Address, PrivateKey, ProtocolIndicator, FilecoinNetwork } from "../../core/types/types";
 import { publicKeyToAddress } from "@nodefactory/filecoin-address";
 import {
     InvalidPayloadLength,
     ProtocolNotSupported,
     UnknownProtocolIndicator,
     InvalidChecksumAddress,
-} from "../core/exceptions/errors";
+} from "../../core/exceptions/errors";
 
 const CID_PREFIX = Buffer.from([0x01, 0x71, 0xa0, 0xe4, 0x02, 0x20]);
 
