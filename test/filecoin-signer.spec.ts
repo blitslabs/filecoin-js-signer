@@ -1,6 +1,8 @@
 import {FilecoinSigner} from "../src";
 import BigNumber from "bignumber.js";
 
+jest.setTimeout(10000);
+
 describe("filecoin signer test", () => {
     let signer: FilecoinSigner;
     const address = "t1o45uzfwlghly7dubahkb5ucoq5e3vg4hcfwcfzy";

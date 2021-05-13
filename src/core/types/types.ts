@@ -27,13 +27,13 @@ export enum ProtocolIndicator {
     BLS,
 }
 
-export const CodeCID = {
-    PaymentChannel: "fil/3/paymentchannel",
+export enum CodeCID {
+    PaymentChannel = "fil/4/paymentchannel",
 };
 
-export const INIT_ACTOR = {
-    mainnet: "f01",
-    testnet: "t01",
+export enum INIT_ACTOR {
+    mainnet = "f01",
+    testnet = "t01",
 };
 
 export enum InitMethod {

@@ -1,32 +1,32 @@
 import BigNumber from "bignumber.js";
 import cbor from "ipld-dag-cbor";
-import { multihash } from "multihashing-async";
+import {multihash} from "multihashing-async";
 import secp256k1 from "secp256k1";
 import blake2b from "blake2b";
-import { publicKeyToAddress } from "@nodefactory/filecoin-address";
+import {publicKeyToAddress} from "@nodefactory/filecoin-address";
 import {
     Address,
-    TokenAmount,
+    CID,
     CodeCID,
-    Nonce,
-    MsgParams,
+    FilecoinNetwork,
+    HashedSecret,
     INIT_ACTOR,
     InitMethod,
-    PaymentChannelMethod,
     Message,
+    MsgParams,
     Network,
+    Nonce,
+    PaymentChannelMethod,
     PrivateKey,
     ProtocolIndicator,
-    FilecoinNetwork,
-    CID,
     SignedVoucherBase64,
-    HashedSecret,
+    TokenAmount,
     VoucherBase64,
 } from "../core/types/types";
-import { addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer } from "./utils";
+import {addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer} from "./utils";
 
-import { InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator } from "../core/exceptions/errors";
-import { Tx } from "./tx";
+import {InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator} from "../core/exceptions/errors";
+import {Tx} from "./tx";
 
 export class PaymentChannel {
     constructor(private readonly tx: Tx) {}
@@ -35,12 +35,13 @@ export class PaymentChannel {
      * @notice Encodes the message's params required to create a payment channel
      * @param from The FIL address of the sender
      * @param to The FIL address of the recipient
+     * @param codeCID CID of the Payment Channel Actor
      * @returns Message params in base64
      */
-    public async createPayChMsgParams(from: Address, to: Address): Promise<MsgParams> {
+    public async createPayChMsgParams(from: Address, to: Address, codeCID: CodeCID): Promise<MsgParams> {
         const constructor_params = cbor.util.serialize([addressAsBytes(from), addressAsBytes(to)]);
 
-        const cid = await cbor.util.cid(Buffer.from(CodeCID.PaymentChannel), {
+        const cid = await cbor.util.cid(Buffer.from(codeCID), {
             hashAlg: multihash.names["identity"],
         });
 
@@ -57,6 +58,7 @@ export class PaymentChannel {
      * @param amount The amount of FIL to send
      * @param nonce The nonce of the sender's account
      * @param network The network of the message
+     * @param codeCID CID of the Payment Channel Actor
      * @returns
      */
     public async createPayChMsg(
@@ -64,7 +66,8 @@ export class PaymentChannel {
         to: Address,
         amount: TokenAmount,
         nonce: Nonce,
-        network: Network = "mainnet"
+        network: Network = "mainnet",
+        codeCID: CodeCID = CodeCID.PaymentChannel
     ): Promise<Message> {
         const message: Message = {
             From: from,
@@ -75,7 +78,7 @@ export class PaymentChannel {
             GasFeeCap: new BigNumber(0),
             GasPremium: new BigNumber(0),
             Method: InitMethod.Exec,
-            Params: await this.createPayChMsgParams(from, to),
+            Params: await this.createPayChMsgParams(from, to, codeCID),
         };
 
         return message;
