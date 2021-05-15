@@ -2,7 +2,6 @@ import { Network, PrivateKey } from "../../core/types/types";
 import { KeyPair, keyPairFromPrivateKey } from "@nodefactory/filecoin-address";
 import { generateMnemonic, mnemonicToSeedSync } from "bip39";
 import { fromSeed } from "bip32";
-import { keyPairFromSeed } from "@nodefactory/filecoin-address";
 
 export class WalletTools {
     /**
