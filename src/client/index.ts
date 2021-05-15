@@ -14,7 +14,7 @@ export class FilecoinClient {
     public readonly utils: typeof Utils;
     public readonly signingTools: FilecoinSigner;
 
-    constructor(rpcUrl?: string, token?: string) {
+    constructor(rpcUrl: string, token?: string) {
         const connector = new HttpJsonRpcConnector({ url: rpcUrl, token });
         this.lotus = new LotusClient(connector);
         this.signingTools = new FilecoinSigner();
