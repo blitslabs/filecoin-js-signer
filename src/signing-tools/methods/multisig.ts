@@ -12,7 +12,7 @@ import cbor from "ipld-dag-cbor";
 import {addressAsBytes} from "./utils";
 import {multihash} from "multihashing-async";
 import BigNumber from "bignumber.js";
-
+import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
 export class Multisig {
     /**
      * @notice Encodes the message's params required to create a multisig
@@ -25,9 +25,12 @@ export class Multisig {
      */
     public async createMsigMsgParams(addresses: Address[],requiredNumberOfApprovals: number,
                                      unlockDuration: string, startEpoch: string, codeCID: CodeCID): Promise<MsgParams> {
+
+        const byteAddresses = addresses.map((add)=>addressAsBytes(add));
+
         const constructor_params = cbor.util.serialize([
             [
-                addresses.map((add)=>addressAsBytes(add)),
+                byteAddresses,
                 requiredNumberOfApprovals,
                 unlockDuration,
                 startEpoch
@@ -39,6 +42,7 @@ export class Multisig {
         });
 
         const params = [cid, constructor_params];
+
         const serialized_params = cbor.util.serialize(params);
 
         return Buffer.from(serialized_params).toString("base64");
