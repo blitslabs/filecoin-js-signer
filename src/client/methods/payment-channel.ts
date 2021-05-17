@@ -29,7 +29,7 @@ export class PaymentChannel {
         privateKey: PrivateKey,
         network: Network = "mainnet"
     ): Promise<CID> {
-        let message = await this.signingTools.paych.createPayChMsg(from, to, amount, 0, network);
+        let message = await this.signingTools.paych.createPaymentChannelMsg(from, to, amount, 0, network);
         return this.tx.sendMessage(message, privateKey);
     }
 

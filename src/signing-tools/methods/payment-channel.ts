@@ -58,7 +58,7 @@ export class PaymentChannelTools {
      * @param codeCID CID of the Payment Channel Actor
      * @returns
      */
-    public async createPayChMsg(
+    public async createPaymentChannelMsg(
         from: Address,
         to: Address,
         amount: TokenAmount,
