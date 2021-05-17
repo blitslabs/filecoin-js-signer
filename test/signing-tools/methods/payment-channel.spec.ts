@@ -17,27 +17,27 @@ describe("payment channels", () => {
             paymentChannel = new PaymentChannelTools();
         });
 
-        xit("should encode the payment channel constructor params", async () => {
+        it("should encode the payment channel constructor params", async () => {
             const params = {
-                code_cid: CodeCID.PaymentChannel,
+                code_cid: "fil/3/paymentchannel",
                 constructor_params: Buffer.from(wasmSigningTools.serializeParams({ from, to })).toString("base64"),
             };
             const wasmResult = Buffer.from(wasmSigningTools.serializeParams(params)).toString("base64");
 
-            const result = await paymentChannel.createPayChMsgParams(from, to, CodeCID.PaymentChannel);
+            const result = await paymentChannel.createPayChMsgParams(from, to, "fil/3/paymentchannel" as CodeCID);
 
             expect(result).toEqual(wasmResult);
         });
 
-        xit("should create the payment channel creation message", async () => {
+        it("should create the payment channel creation message", async () => {
             const amount = new BigNumber(100);
             const params = {
-                code_cid: CodeCID.PaymentChannel,
+                code_cid: "fil/3/paymentchannel",
                 constructor_params: Buffer.from(wasmSigningTools.serializeParams({ from, to })).toString("base64"),
             };
             const serializedParams = Buffer.from(wasmSigningTools.serializeParams(params)).toString("base64");
 
-            const result = await paymentChannel.createPaymentChannelMsg(from, to, amount, 0, "testnet");
+            const result = await paymentChannel.createPaymentChannelMsg(from, to, amount, 0, "testnet", "fil/3/paymentchannel" as CodeCID);
 
             const expected = {
                 From: from,

@@ -29,6 +29,7 @@ export enum ProtocolIndicator {
 
 export enum CodeCID {
     PaymentChannel = "fil/4/paymentchannel",
+    Multisig = "fil/4/multisig",
 }
 
 export enum INIT_ACTOR {
