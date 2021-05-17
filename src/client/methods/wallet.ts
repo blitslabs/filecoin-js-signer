@@ -1,30 +1,10 @@
 import { Address, CID, Network, PrivateKey, TokenAmount } from "../../core/types/types";
-import { KeyPair } from "@nodefactory/filecoin-address";
 import { Tx } from "./tx";
 import BigNumber from "bignumber.js";
 import { FilecoinSigner } from "../../signing-tools";
 
 export class Wallet {
     constructor(private readonly tx: Tx, private readonly signingTools: FilecoinSigner) {}
-
-    /**
-     * @notice Recovers key pair from private key
-     * @param privateKey hex or base64 encoded private key
-     * @param network mainnet or testnet
-     * @returns Key pair
-     */
-    public keyRecover(privateKey: PrivateKey, network: Network = "mainnet"): KeyPair {
-        return this.signingTools.wallet.keyRecover(privateKey, network);
-    }
-
-    /**
-     * @notice Generates a mnemonic
-     * @param strength Strength of the mnemonic
-     * @returns Mnemonic
-     */
-    public generateMnemonic(strength = 128): string {
-        return this.signingTools.wallet.generateMnemonic(strength);
-    }
 
     /**
      * @notice Gets the balance of the account
