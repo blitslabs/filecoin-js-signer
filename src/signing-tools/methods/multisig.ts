@@ -67,7 +67,7 @@ export class Multisig {
     public async createMultisigMsg(from: Address, addresses: Address[], amount: TokenAmount,
                                    requiredNumberOfApprovals: number, nonce: number, unlockDuration: number, startEpoch: number,
                                    network: Network = "mainnet",
-                                   codeCID: CodeCID = CodeCID.Multisig) {
+                                   codeCID: CodeCID = CodeCID.Multisig): Promise<Message> {
         const message: Message = {
             From: from,
             To: INIT_ACTOR[network],
@@ -89,7 +89,7 @@ export class Multisig {
      * @param amount FIL amount to propose
      * @returns Message params in base64
      */
-    public async proposeMsigMsgParams(to: Address, amount: TokenAmount): Promise<MsgParams> {
+    public proposeMsigMsgParams(to: Address, amount: TokenAmount): MsgParams {
         const propose_params = cbor.util.serialize([
             [
                 addressAsBytes(to),
@@ -103,7 +103,16 @@ export class Multisig {
     }
 
 
-    public async proposeMultisigMsg(multisigAddress: Address, from: Address,  to: Address, amount: TokenAmount, nonce: number) {
+    /**
+     * @notice Creates propose multisig message
+     * @param multisigAddress Address of the created multisig
+     * @param from Sender's FIL address
+     * @param to Recipient's FIL address
+     * @param amount FIL amount to propose
+     * @param nonce Sender's nonce
+     * @returns Message params in base64
+     */
+    public proposeMultisigMsg(multisigAddress: Address, from: Address,  to: Address, amount: TokenAmount, nonce: number): Message {
         const message: Message = {
             From: from,
             To: multisigAddress,
@@ -113,7 +122,39 @@ export class Multisig {
             GasFeeCap: new BigNumber(0),
             GasPremium: new BigNumber(0),
             Method: MultisigMethod.Propose,
-            Params: await this.proposeMsigMsgParams(to, amount),
+            Params: this.proposeMsigMsgParams(to, amount),
+        };
+
+        return message;
+    }
+
+
+    public approveOrCancelMsigMsgParams(requester: Address, to: Address, amount: TokenAmount): MsgParams {
+        const approval_params = cbor.util.serialize([
+            [
+                addressAsBytes(requester),
+                addressAsBytes(to),
+                serializeBigNum(amount.toString()),
+                0,
+                new Buffer(0)
+            ]
+        ]);
+
+        return Buffer.from(approval_params.slice(1)).toString("base64");
+    }
+
+    public approveMultisigMsg(multisigAddress: Address, messageId: number, requester: Address,
+                              from: Address, to: Address, amount: TokenAmount, nonce: number): Message {
+        const message: Message = {
+            From: from,
+            To: multisigAddress,
+            Nonce: nonce,
+            Value: new BigNumber(0),
+            GasLimit: 0,
+            GasFeeCap: new BigNumber(0),
+            GasPremium: new BigNumber(0),
+            Method: MultisigMethod.Approve,
+            Params: this.approveOrCancelMsigMsgParams(requester, to, amount),
         };
 
         return message;
