@@ -59,7 +59,7 @@ export class Multisig {
             To: INIT_ACTOR[network],
             Nonce: nonce,
             Value: amount,
-            GasLimit: 10000000,
+            GasLimit: 0,
             GasFeeCap: new BigNumber(0),
             GasPremium: new BigNumber(0),
             Method: InitMethod.Exec,

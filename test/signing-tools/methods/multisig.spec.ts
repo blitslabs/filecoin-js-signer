@@ -34,14 +34,23 @@ describe("multisig test", () => {
     })
 
     it("should create a init msig actor message", async () => {
-        const wasmResult = wasmSigningTools.createMultisig(from, signers, "100", 2, 0, "0", "0");
+        const wasmResult = wasmSigningTools.createMultisig(from, signers, "100", 2, 0, "3", "6");
         const result = await msig.createMultisig(from, signers, new BigNumber(100),
-            2, 0, 0, 0,
-            "testnet", "fil/4/multisig" as CodeCID);
+            2, 0, 3, 6,
+            "testnet", "fil/2/multisig" as CodeCID);
 
-        const client = new FilecoinClient("https://calibration.node.glif.io/rpc/v0");
-        const message = await client.tx.sendMessage(result, "b144cf14dbd413aaefaa4658bca06733aa33386e651ab9816954807c74517bf1");
-        console.log({message})
-        console.log({result, wasmResult})
+        const fixedResult = {
+            from: result.From,
+            to: result.To,
+            nonce: result.Nonce,
+            value: result.Value.toString(),
+            gaslimit: result.GasLimit,
+            gasfeecap: result.GasFeeCap.toString(),
+            gaspremium: result.GasPremium.toString(),
+            method: result.Method,
+            params: result.Params,
+        };
+
+        expect(fixedResult).toEqual(wasmResult);
     })
 })
