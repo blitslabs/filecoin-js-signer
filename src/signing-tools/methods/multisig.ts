@@ -9,7 +9,7 @@ import {
     TokenAmount
 } from "../../core/types/types";
 import cbor from "ipld-dag-cbor";
-import {addressAsBytes, serializeBigNum} from "./utils";
+import {addressAsBytes, createHash, serializeBigNum} from "./utils";
 import {multihash} from "multihashing-async";
 import BigNumber from "bignumber.js";
 
@@ -130,7 +130,7 @@ export class Multisig {
 
 
     public approveOrCancelMsigMsgParams(requester: Address, to: Address, amount: TokenAmount): MsgParams {
-        const approval_params = cbor.util.serialize([
+        const propose_params = cbor.util.serialize([
             [
                 addressAsBytes(requester),
                 addressAsBytes(to),
@@ -140,7 +140,15 @@ export class Multisig {
             ]
         ]);
 
-        return Buffer.from(approval_params.slice(1)).toString("base64");
+        const serializedProposalParams =  Buffer.from(propose_params.slice(1));
+
+        // TODO
+
+        const hash = createHash(serializedProposalParams);
+
+        console.log({hash})
+
+        return ""
     }
 
     public approveMultisigMsg(multisigAddress: Address, messageId: number, requester: Address,
