@@ -9,7 +9,7 @@ import {
     TokenAmount
 } from "../../core/types/types";
 import cbor from "ipld-dag-cbor";
-import {addressAsBytes} from "./utils";
+import {addressAsBytes, serializeBigNum} from "./utils";
 import {multihash} from "multihashing-async";
 import BigNumber from "bignumber.js";
 
@@ -93,9 +93,9 @@ export class Multisig {
         const propose_params = cbor.util.serialize([
             [
                 addressAsBytes(to),
-                amount.toString(),
+                serializeBigNum(amount.toString()),
                 0,
-                []
+                new Buffer(0)
             ]
         ]);
 
