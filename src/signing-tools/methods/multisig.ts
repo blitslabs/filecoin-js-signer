@@ -12,7 +12,7 @@ import cbor from "ipld-dag-cbor";
 import {addressAsBytes} from "./utils";
 import {multihash} from "multihashing-async";
 import BigNumber from "bignumber.js";
-import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
+
 export class Multisig {
     /**
      * @notice Encodes the message's params required to create a multisig
@@ -24,11 +24,11 @@ export class Multisig {
      * @returns Message params in base64
      */
     public async createMsigMsgParams(addresses: Address[],requiredNumberOfApprovals: number,
-                                     unlockDuration: string, startEpoch: string, codeCID: CodeCID): Promise<MsgParams> {
+                                     unlockDuration: number, startEpoch: number, codeCID: CodeCID): Promise<MsgParams> {
 
         const byteAddresses = addresses.map((add)=>addressAsBytes(add));
 
-        const constructor_params = cbor.util.serialize([
+        let constructor_params = cbor.util.serialize([
             [
                 byteAddresses,
                 requiredNumberOfApprovals,
@@ -36,6 +36,8 @@ export class Multisig {
                 startEpoch
             ]
         ]);
+
+        constructor_params = constructor_params.slice(1);
 
         const cid = await cbor.util.cid(Buffer.from(codeCID), {
             hashAlg: multihash.names["identity"],
@@ -49,7 +51,7 @@ export class Multisig {
     }
 
     public async createMultisig(from: Address, addresses: Address[], amount: TokenAmount,
-                   requiredNumberOfApprovals: number, nonce: number, unlockDuration: string, startEpoch: string,
+                   requiredNumberOfApprovals: number, nonce: number, unlockDuration: number, startEpoch: number,
                    network: Network = "mainnet",
                    codeCID: CodeCID = CodeCID.Multisig) {
         const message: Message = {
