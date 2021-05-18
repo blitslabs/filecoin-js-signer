@@ -4,7 +4,7 @@ import {
     INIT_ACTOR,
     InitMethod,
     Message,
-    MsgParams,
+    MsgParams, MultisigMethod,
     Network,
     TokenAmount
 } from "../../core/types/types";
@@ -16,14 +16,14 @@ import BigNumber from "bignumber.js";
 export class Multisig {
     /**
      * @notice Encodes the message's params required to create a multisig
-     * @param addresses
-     * @param requiredNumberOfApprovals
-     * @param unlockDuration
-     * @param startEpoch
+     * @param addresses Addresses of the signers.
+     * @param requiredNumberOfApprovals Required number of approvals.
+     * @param unlockDuration Duration threshold to unlock.
+     * @param startEpoch Initial epoch,
      * @param codeCID CID of the Payment Channel Actor
      * @returns Message params in base64
      */
-    public async createMsigMsgParams(addresses: Address[],requiredNumberOfApprovals: number,
+    public async createMsigParams(addresses: Address[],requiredNumberOfApprovals: number,
                                      unlockDuration: number, startEpoch: number, codeCID: CodeCID): Promise<MsgParams> {
 
         const byteAddresses = addresses.map((add)=>addressAsBytes(add));
@@ -50,10 +50,24 @@ export class Multisig {
         return Buffer.from(serialized_params).toString("base64");
     }
 
-    public async createMultisig(from: Address, addresses: Address[], amount: TokenAmount,
-                   requiredNumberOfApprovals: number, nonce: number, unlockDuration: number, startEpoch: number,
-                   network: Network = "mainnet",
-                   codeCID: CodeCID = CodeCID.Multisig) {
+
+    /**
+     * @notice Creates a create multisig message
+     * @param from FIL address of the sender
+     * @param addresses Addresses of the signers.
+     * @param amount The amount of FIL to send
+     * @param requiredNumberOfApprovals Required number of approvals.
+     * @param nonce The nonce of the sender's account
+     * @param unlockDuration Duration threshold to unlock.
+     * @param startEpoch Initial epoch,
+     * @param network The network of the message
+     * @param codeCID CID of the Payment Channel Actor
+     * @returns Message params in base64
+     */
+    public async createMultisigMsg(from: Address, addresses: Address[], amount: TokenAmount,
+                                   requiredNumberOfApprovals: number, nonce: number, unlockDuration: number, startEpoch: number,
+                                   network: Network = "mainnet",
+                                   codeCID: CodeCID = CodeCID.Multisig) {
         const message: Message = {
             From: from,
             To: INIT_ACTOR[network],
@@ -63,7 +77,43 @@ export class Multisig {
             GasFeeCap: new BigNumber(0),
             GasPremium: new BigNumber(0),
             Method: InitMethod.Exec,
-            Params: await this.createMsigMsgParams(addresses, requiredNumberOfApprovals, unlockDuration, startEpoch, codeCID),
+            Params: await this.createMsigParams(addresses, requiredNumberOfApprovals, unlockDuration, startEpoch, codeCID),
+        };
+
+        return message;
+    }
+
+    /**
+     * @notice Encodes the message's params required to propose a multisig
+     * @param to Recipient's FIL address
+     * @param amount FIL amount to propose
+     * @returns Message params in base64
+     */
+    public async proposeMsigMsgParams(to: Address, amount: TokenAmount): Promise<MsgParams> {
+        const propose_params = cbor.util.serialize([
+            [
+                addressAsBytes(to),
+                amount.toString(),
+                0,
+                []
+            ]
+        ]);
+
+        return Buffer.from(propose_params.slice(1)).toString("base64");
+    }
+
+
+    public async proposeMultisigMsg(multisigAddress: Address, from: Address,  to: Address, amount: TokenAmount, nonce: number) {
+        const message: Message = {
+            From: from,
+            To: multisigAddress,
+            Nonce: nonce,
+            Value: new BigNumber(0),
+            GasLimit: 0,
+            GasFeeCap: new BigNumber(0),
+            GasPremium: new BigNumber(0),
+            Method: MultisigMethod.Propose,
+            Params: await this.proposeMsigMsgParams(to, amount),
         };
 
         return message;
