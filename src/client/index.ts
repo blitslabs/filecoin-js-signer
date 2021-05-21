@@ -4,6 +4,7 @@ import { PaymentChannel } from "./methods/payment-channel";
 import { Tx } from "./methods/tx";
 import { Wallet } from "./methods/wallet";
 import { FilecoinSigner } from "../signing-tools";
+import {Multisig} from "./methods/multisig";
 
 export class FilecoinClient {
     private readonly lotus: LotusClient;
@@ -11,6 +12,7 @@ export class FilecoinClient {
     public readonly paych: PaymentChannel;
     public readonly tx: Tx;
     public readonly wallet: Wallet;
+    public readonly msig: Multisig;
     public readonly utils: typeof Utils;
     public readonly signingTools: FilecoinSigner;
 
@@ -21,6 +23,7 @@ export class FilecoinClient {
         this.tx = new Tx(this.lotus, this.signingTools);
         this.paych = new PaymentChannel(this.tx, this.signingTools);
         this.wallet = new Wallet(this.tx, this.signingTools);
+        this.msig = new Multisig(this.tx, this.signingTools);
         this.utils = Utils;
     }
 }

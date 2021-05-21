@@ -1,4 +1,4 @@
-import { Address, CID, Network, PrivateKey, TokenAmount } from "../../core/types/types";
+import {Address, CID, MessageResponse, Network, PrivateKey, TokenAmount} from "../../core/types/types";
 import { Tx } from "./tx";
 import BigNumber from "bignumber.js";
 import { FilecoinSigner } from "../../signing-tools";
@@ -24,7 +24,7 @@ export class Wallet {
      * @param gasLimit Gas limit value
      * @param privateKey Private key of the sender
      * @param network mainnet or testnet
-     * @returns The Transaction CID
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async transfer(
         to: Address,
@@ -32,7 +32,7 @@ export class Wallet {
         gasLimit: number,
         privateKey: PrivateKey,
         network: Network = "mainnet"
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         return this.tx.send(to, amount, gasLimit, privateKey, network);
     }
 }

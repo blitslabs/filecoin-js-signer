@@ -1,6 +1,6 @@
 import {Tx} from "./tx";
 import {FilecoinSigner} from "../../signing-tools";
-import {Address, CID, CodeCID, Network, PrivateKey, TokenAmount} from "../../core/types/types";
+import {Address, CID, CodeCID, MessageResponse, Network, PrivateKey, TokenAmount} from "../../core/types/types";
 
 export class Multisig {
     constructor(private readonly tx: Tx, private readonly signingTools: FilecoinSigner) {
@@ -20,7 +20,7 @@ export class Multisig {
      * @param privateKey Private key of the signer
      * @param network The network of the message
      * @param waitMsg Boolean indicating whether to wait for the message to confirm or not
-     * @returns
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async createMultisig(
         from: Address,
@@ -34,7 +34,7 @@ export class Multisig {
         privateKey: PrivateKey,
         network: Network = "mainnet",
         waitMsg: boolean = false
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         let message = await this.signingTools.msig.createMultisigMsg(from, addresses, amount,
             requiredNumberOfApprovals, nonce, unlockDuration, startEpoch, network, codeCID);
         return this.tx.sendMessage(message, privateKey, waitMsg);
@@ -50,7 +50,7 @@ export class Multisig {
      * @param nonce Sender's nonce
      * @param privateKey Private key of the signer
      * @param waitMsg Boolean indicating whether to wait for the message to confirm or not
-     * @returns
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async proposeMultisig(
         multisigAddress: Address,
@@ -60,7 +60,7 @@ export class Multisig {
         nonce: number,
         privateKey: PrivateKey,
         waitMsg: boolean = false
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         let message = await this.signingTools.msig.proposeMultisigMsg(multisigAddress, from, to, amount, nonce);
         return this.tx.sendMessage(message, privateKey, waitMsg);
     }
@@ -77,7 +77,7 @@ export class Multisig {
      * @param nonce Sender's nonce
      * @param privateKey Private key of the signer
      * @param waitMsg Boolean indicating whether to wait for the message to confirm or not
-     * @returns
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async approveMultisig(
         multisigAddress: Address,
@@ -89,7 +89,7 @@ export class Multisig {
         nonce: number,
         privateKey: PrivateKey,
         waitMsg: boolean = false
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         let message = await this.signingTools.msig.approveMultisigMsg(multisigAddress, messageId, requester, from, to, amount, nonce);
         return this.tx.sendMessage(message, privateKey, waitMsg);
     }
@@ -106,7 +106,7 @@ export class Multisig {
      * @param nonce Sender's nonce
      * @param privateKey Private key of the signer
      * @param waitMsg Boolean indicating whether to wait for the message to confirm or not
-     * @returns
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async cancelMultisig(
         multisigAddress: Address,
@@ -118,7 +118,7 @@ export class Multisig {
         nonce: number,
         privateKey: PrivateKey,
         waitMsg: boolean = false
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         let message = await this.signingTools.msig.cancelMultisigMsg(multisigAddress, messageId, requester, from, to, amount, nonce);
         return this.tx.sendMessage(message, privateKey, waitMsg);
     }

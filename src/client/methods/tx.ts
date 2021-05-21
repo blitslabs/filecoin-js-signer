@@ -1,8 +1,7 @@
 import { LotusClient } from "filecoin.js";
-import { Message, PrivateKey, Network, Address, TokenAmount, CID } from "../../core/types/types";
+import {Message, PrivateKey, Network, Address, TokenAmount, CID, MessageResponse} from "../../core/types/types";
 import BigNumber from "bignumber.js";
 import { FilecoinSigner } from "../../signing-tools";
-import {MessageReceipt} from "filecoin.js/builds/dist/providers/Types";
 
 export class Tx {
     constructor(public readonly clientProvider: LotusClient, private readonly signingTools: FilecoinSigner) {}
@@ -20,7 +19,7 @@ export class Tx {
         privateKey: PrivateKey,
         updateMsgNonce: boolean = true,
         waitMsg: boolean = false
-    ): Promise<CID | MessageReceipt> {
+    ): Promise<MessageResponse> {
         if (updateMsgNonce) {
             // Get Address Nonce
             message.Nonce = await this.clientProvider.mpool.getNonce(message.From);
@@ -46,7 +45,7 @@ export class Tx {
         privateKey: PrivateKey,
         network: Network,
         waitMsg: boolean = false
-    ): Promise<CID | object> {
+    ): Promise<MessageResponse> {
         if (gasLimit < 1) {
             throw new Error("Invalid gas limit");
         }
@@ -75,7 +74,14 @@ export class Tx {
         return await this.pushMessage(message, privateKey, waitMsg);
     }
 
-    private async pushMessage(message: Message, privateKey: PrivateKey, waitMsg: boolean) {
+    /**
+     * @notice Send FIL to recipient
+     * @param message Meesage to be sent
+     * @param privateKey Private key encoded as hex or base64
+     * @param waitMsg Boolean indicating whether to wait for the message to confirm or not
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
+     */
+    private async pushMessage(message: Message, privateKey: PrivateKey, waitMsg: boolean): Promise<MessageResponse> {
         // Get Unsigned Message with Gas Estimation
         const unsignedMessage = await this.clientProvider.gasEstimate.messageGas(message);
 

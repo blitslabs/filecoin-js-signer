@@ -1,7 +1,7 @@
 import {
     Address,
     CID,
-    HashedSecret,
+    HashedSecret, MessageResponse,
     Network,
     PrivateKey,
     SignedVoucherBase64,
@@ -20,7 +20,7 @@ export class PaymentChannel {
      * @param amount The amount of FIL to send
      * @param privateKey Private key of the signer
      * @param network The network of the message
-     * @returns
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async createPaymentChannel(
         from: Address,
@@ -28,7 +28,7 @@ export class PaymentChannel {
         amount: TokenAmount,
         privateKey: PrivateKey,
         network: Network = "mainnet"
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         let message = await this.signingTools.paych.createPaymentChannelMsg(from, to, amount, 0, network);
         return this.tx.sendMessage(message, privateKey);
     }
@@ -38,13 +38,13 @@ export class PaymentChannel {
      * @param paymentChannelAddress The address of the payment channel
      * @param from Address of the sender
      * @param privateKey Private key of the sender
-     * @returns
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async settlePaymentChannel(
         paymentChannelAddress: Address,
         from: Address,
         privateKey: PrivateKey
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         let message = this.signingTools.paych.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
         return this.tx.sendMessage(message, privateKey);
     }
@@ -56,7 +56,7 @@ export class PaymentChannel {
      * @param signedVoucher Signed voucher encoded in base64
      * @param secret The hashed secret required to redeem the voucher
      * @param privateKey Private key of the sender
-     * @returns
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async updatePaymentChannel(
         paymentChannelAddress: Address,
@@ -64,7 +64,7 @@ export class PaymentChannel {
         signedVoucher: SignedVoucherBase64,
         secret: HashedSecret,
         privateKey: PrivateKey
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         let message = this.signingTools.paych.updatePaymentChannelMsg(
             paymentChannelAddress,
             from,
@@ -80,13 +80,13 @@ export class PaymentChannel {
      * @param paymentChannelAddress Address of the payment channel
      * @param from The FIL address of the sender
      * @param privateKey Private key of the sender
-     * @returns
+     * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async collectPaymentChannel(
         paymentChannelAddress: Address,
         from: Address,
         privateKey: PrivateKey
-    ): Promise<CID> {
+    ): Promise<MessageResponse> {
         let message = this.signingTools.paych.collectPaymentChannelMsg(paymentChannelAddress, from, 0);
         return this.tx.sendMessage(message, privateKey);
     }

@@ -10,7 +10,25 @@ export type Nonce = number;
 
 export type MsgParams = string;
 
-export type CID = string | object;
+export type CID = string | {
+    "/": string
+};
+
+export type MessageReceipt = {
+    ExitCode: number;
+    Return: any;
+    GasUsed: number;
+};
+
+export type MsgLookup = {
+    Message: CID;
+    Receipt: MessageReceipt;
+    ReturnDec: any;
+    TipSet: CID[];
+    Height: number;
+}
+
+export type MessageResponse = CID | MsgLookup;
 
 export type Network = "mainnet" | "testnet";
 
