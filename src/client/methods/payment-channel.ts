@@ -32,7 +32,7 @@ export class PaymentChannel {
         waitMsg = false
     ): Promise<MessageResponse> {
         let message = await this.signingTools.paych.createPaymentChannelMsg(from, to, amount, 0, network);
-        return this.tx.sendMessage(message, privateKey);
+        return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 
     /**
@@ -50,7 +50,7 @@ export class PaymentChannel {
         waitMsg = false
     ): Promise<MessageResponse> {
         let message = this.signingTools.paych.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
-        return this.tx.sendMessage(message, privateKey);
+        return this.tx.sendMessage(message, privateKey, true,  waitMsg);
     }
 
     /**
@@ -78,7 +78,7 @@ export class PaymentChannel {
             secret,
             0
         );
-        return this.tx.sendMessage(message, privateKey);
+        return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 
     /**
@@ -96,6 +96,6 @@ export class PaymentChannel {
         waitMsg = false
     ): Promise<MessageResponse> {
         let message = this.signingTools.paych.collectPaymentChannelMsg(paymentChannelAddress, from, 0);
-        return this.tx.sendMessage(message, privateKey);
+        return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 }

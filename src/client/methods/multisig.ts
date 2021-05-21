@@ -37,7 +37,7 @@ export class Multisig {
     ): Promise<MessageResponse> {
         let message = await this.signingTools.msig.createMultisigMsg(from, addresses, amount,
             requiredNumberOfApprovals, nonce, unlockDuration, startEpoch, network, codeCID);
-        return this.tx.sendMessage(message, privateKey, waitMsg);
+        return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 
     /**
@@ -62,7 +62,7 @@ export class Multisig {
         waitMsg: boolean = false
     ): Promise<MessageResponse> {
         let message = await this.signingTools.msig.proposeMultisigMsg(multisigAddress, from, to, amount, nonce);
-        return this.tx.sendMessage(message, privateKey, waitMsg);
+        return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 
     /**
@@ -91,7 +91,7 @@ export class Multisig {
         waitMsg: boolean = false
     ): Promise<MessageResponse> {
         let message = await this.signingTools.msig.approveMultisigMsg(multisigAddress, messageId, requester, from, to, amount, nonce);
-        return this.tx.sendMessage(message, privateKey, waitMsg);
+        return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 
     /**
@@ -120,6 +120,6 @@ export class Multisig {
         waitMsg: boolean = false
     ): Promise<MessageResponse> {
         let message = await this.signingTools.msig.cancelMultisigMsg(multisigAddress, messageId, requester, from, to, amount, nonce);
-        return this.tx.sendMessage(message, privateKey, waitMsg);
+        return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 }

@@ -35,6 +35,6 @@ export class Wallet {
         network: Network = "mainnet",
         waitMsg = false
     ): Promise<MessageResponse> {
-        return this.tx.send(to, amount, gasLimit, privateKey, network);
+        return this.tx.send(to, amount, gasLimit, privateKey, network, waitMsg);
     }
 }
