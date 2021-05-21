@@ -76,7 +76,7 @@ export class Tx {
 
     /**
      * @notice Send FIL to recipient
-     * @param message Meesage to be sent
+     * @param message Message to be sent
      * @param privateKey Private key encoded as hex or base64
      * @param waitMsg Boolean indicating whether to wait for the message to confirm or not
      * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
