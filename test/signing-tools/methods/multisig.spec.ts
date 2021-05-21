@@ -1,18 +1,17 @@
-import { Multisig } from "../../../src/signing-tools/methods/multisig";
+import { MultisigTools } from "../../../src/signing-tools/methods/multisig";
 
 import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
 import BigNumber from "bignumber.js";
 import { CodeCID } from "../../../src/core/types/types";
-import { FilecoinClient } from "../../../src/client";
 
 describe("multisig test", () => {
-    let msig: Multisig;
+    let msig: MultisigTools;
     const from = "t1vwxualsf6gx5jjl2fp7zh7gy6ailk4hnwgkroci";
     const signers = ["t1d2xrzcslx7xlbbylc5c3d5lvandqw4iwl6epxba", "t137sjdbgunloi7couiy4l5nc7pd6k2jmq32vizpy"];
     const multisigAddress = "t01004";
 
     beforeEach(() => {
-        msig = new Multisig();
+        msig = new MultisigTools();
     });
 
     it("should create a init msig actor constructor params", async () => {

@@ -14,7 +14,7 @@ import { addressAsBytes, createHash, serializeBigNum } from "./utils";
 import { multihash } from "multihashing-async";
 import BigNumber from "bignumber.js";
 
-export class Multisig {
+export class MultisigTools {
     /**
      * @notice Encodes the message's params required to create a multisig
      * @param addresses Addresses of the signers.
