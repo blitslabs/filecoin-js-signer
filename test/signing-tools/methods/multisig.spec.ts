@@ -91,4 +91,23 @@ describe("multisig test", () => {
 
         expect(fixedResult).toEqual(wasmResult);
     })
+
+    it("should create a cancel multisig message", async () => {
+        const wasmResult = wasmSigningTools.cancelMultisig(multisigAddress, 1234, signers[0], signers[1], "100", from, 0);
+        const result = await msig.cancelMultisigMsg(multisigAddress, 1234, signers[0], from, signers[1], new BigNumber(100), 0);
+
+        const fixedResult = {
+            from: result.From,
+            to: result.To,
+            nonce: result.Nonce,
+            value: result.Value.toString(),
+            gaslimit: result.GasLimit,
+            gasfeecap: result.GasFeeCap.toString(),
+            gaspremium: result.GasPremium.toString(),
+            method: result.Method,
+            params: result.Params,
+        };
+
+        expect(fixedResult).toEqual(wasmResult);
+    })
 })

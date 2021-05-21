@@ -163,9 +163,8 @@ export class Multisig {
         return Buffer.from(params).slice(1).toString("base64")
     }
 
-
     /**
-     * @notice Encodes the message's params required to approve/cancel a multisig
+     * @notice Creates a message to approve multisig
      * @param multisigAddress Address of the created multisig
      * @param messageId: Id of the transaction
      * @param requester: FIL address of the requester
@@ -186,6 +185,35 @@ export class Multisig {
             GasFeeCap: new BigNumber(0),
             GasPremium: new BigNumber(0),
             Method: MultisigMethod.Approve,
+            Params: this.approveOrCancelMsigMsgParams(messageId, requester, to, amount),
+        };
+
+        return message;
+    }
+
+
+    /**
+     * @notice Creates a message to cancel multisig
+     * @param multisigAddress Address of the created multisig
+     * @param messageId: Id of the transaction
+     * @param requester: FIL address of the requester
+     * @param from Sender's FIL address
+     * @param to Recipient's FIL address
+     * @param amount FIL amount to approve/cancel
+     * @param nonce Sender's nonce
+     * @returns Message params in base64
+     */
+    public cancelMultisigMsg(multisigAddress: Address, messageId: number, requester: Address,
+                              from: Address, to: Address, amount: TokenAmount, nonce: number): Message {
+        const message: Message = {
+            From: from,
+            To: multisigAddress,
+            Nonce: nonce,
+            Value: new BigNumber(0),
+            GasLimit: 0,
+            GasFeeCap: new BigNumber(0),
+            GasPremium: new BigNumber(0),
+            Method: MultisigMethod.Cancel,
             Params: this.approveOrCancelMsigMsgParams(messageId, requester, to, amount),
         };
 
