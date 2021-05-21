@@ -22,7 +22,7 @@ import {
 
 const CID_PREFIX = Buffer.from([0x01, 0x71, 0xa0, 0xe4, 0x02, 0x20]);
 
-export function createHash(message): Buffer{
+export function createHash(message): Buffer {
     const blakeCtx = blake.blake2bInit(32);
     blake.blake2bUpdate(blakeCtx, message);
     return Buffer.from(blake.blake2bFinal(blakeCtx));

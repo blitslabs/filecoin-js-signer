@@ -4,13 +4,14 @@ import {
     INIT_ACTOR,
     InitMethod,
     Message,
-    MsgParams, MultisigMethod,
+    MsgParams,
+    MultisigMethod,
     Network,
-    TokenAmount
+    TokenAmount,
 } from "../../core/types/types";
 import cbor from "ipld-dag-cbor";
-import {addressAsBytes, createHash, serializeBigNum} from "./utils";
-import {multihash} from "multihashing-async";
+import { addressAsBytes, createHash, serializeBigNum } from "./utils";
+import { multihash } from "multihashing-async";
 import BigNumber from "bignumber.js";
 
 export class Multisig {
@@ -23,18 +24,17 @@ export class Multisig {
      * @param codeCID CID of the Payment Channel Actor
      * @returns Message params in base64
      */
-    public async createMsigParams(addresses: Address[],requiredNumberOfApprovals: number,
-                                     unlockDuration: number, startEpoch: number, codeCID: CodeCID): Promise<MsgParams> {
-
-        const byteAddresses = addresses.map((add)=>addressAsBytes(add));
+    public async createMsigParams(
+        addresses: Address[],
+        requiredNumberOfApprovals: number,
+        unlockDuration: number,
+        startEpoch: number,
+        codeCID: CodeCID
+    ): Promise<MsgParams> {
+        const byteAddresses = addresses.map((add) => addressAsBytes(add));
 
         let constructor_params = cbor.util.serialize([
-            [
-                byteAddresses,
-                requiredNumberOfApprovals,
-                unlockDuration,
-                startEpoch
-            ]
+            [byteAddresses, requiredNumberOfApprovals, unlockDuration, startEpoch],
         ]);
 
         constructor_params = constructor_params.slice(1);
@@ -50,7 +50,6 @@ export class Multisig {
         return Buffer.from(serialized_params).toString("base64");
     }
 
-
     /**
      * @notice Creates a create multisig message
      * @param from FIL address of the sender
@@ -64,10 +63,17 @@ export class Multisig {
      * @param codeCID CID of the Payment Channel Actor
      * @returns Message params in base64
      */
-    public async createMultisigMsg(from: Address, addresses: Address[], amount: TokenAmount,
-                                   requiredNumberOfApprovals: number, nonce: number, unlockDuration: number, startEpoch: number,
-                                   network: Network = "mainnet",
-                                   codeCID: CodeCID = CodeCID.Multisig): Promise<Message> {
+    public async createMultisigMsg(
+        from: Address,
+        addresses: Address[],
+        amount: TokenAmount,
+        requiredNumberOfApprovals: number,
+        nonce: number,
+        unlockDuration: number,
+        startEpoch: number,
+        network: Network = "mainnet",
+        codeCID: CodeCID = CodeCID.Multisig
+    ): Promise<Message> {
         const message: Message = {
             From: from,
             To: INIT_ACTOR[network],
@@ -77,7 +83,13 @@ export class Multisig {
             GasFeeCap: new BigNumber(0),
             GasPremium: new BigNumber(0),
             Method: InitMethod.Exec,
-            Params: await this.createMsigParams(addresses, requiredNumberOfApprovals, unlockDuration, startEpoch, codeCID),
+            Params: await this.createMsigParams(
+                addresses,
+                requiredNumberOfApprovals,
+                unlockDuration,
+                startEpoch,
+                codeCID
+            ),
         };
 
         return message;
@@ -91,17 +103,11 @@ export class Multisig {
      */
     public proposeMsigMsgParams(to: Address, amount: TokenAmount): MsgParams {
         const propose_params = cbor.util.serialize([
-            [
-                addressAsBytes(to),
-                serializeBigNum(amount.toString()),
-                0,
-                new Buffer(0)
-            ]
+            [addressAsBytes(to), serializeBigNum(amount.toString()), 0, new Buffer(0)],
         ]);
 
         return Buffer.from(propose_params.slice(1)).toString("base64");
     }
-
 
     /**
      * @notice Creates propose multisig message
@@ -112,7 +118,13 @@ export class Multisig {
      * @param nonce Sender's nonce
      * @returns Message params in base64
      */
-    public proposeMultisigMsg(multisigAddress: Address, from: Address,  to: Address, amount: TokenAmount, nonce: number): Message {
+    public proposeMultisigMsg(
+        multisigAddress: Address,
+        from: Address,
+        to: Address,
+        amount: TokenAmount,
+        nonce: number
+    ): Message {
         const message: Message = {
             From: from,
             To: multisigAddress,
@@ -128,8 +140,6 @@ export class Multisig {
         return message;
     }
 
-
-
     /**
      * @notice Encodes the message's params required to approve/cancel a multisig
      * @param messageId: Id of the transaction
@@ -138,29 +148,23 @@ export class Multisig {
      * @param amount FIL amount to approve/cancel
      * @returns Message params in base64
      */
-    public approveOrCancelMsigMsgParams(messageId: number, requester: Address, to: Address, amount: TokenAmount): MsgParams {
+    public approveOrCancelMsigMsgParams(
+        messageId: number,
+        requester: Address,
+        to: Address,
+        amount: TokenAmount
+    ): MsgParams {
         const propose_params = cbor.util.serialize([
-            [
-                addressAsBytes(requester),
-                addressAsBytes(to),
-                serializeBigNum(amount.toString()),
-                0,
-                new Buffer(0)
-            ]
+            [addressAsBytes(requester), addressAsBytes(to), serializeBigNum(amount.toString()), 0, new Buffer(0)],
         ]);
 
-        const serializedProposalParams =  Buffer.from(propose_params.slice(1));
+        const serializedProposalParams = Buffer.from(propose_params.slice(1));
 
         const hash = createHash(serializedProposalParams);
 
-        const params = cbor.util.serialize([
-            [
-                messageId,
-                hash
-            ]
-        ]);
+        const params = cbor.util.serialize([[messageId, hash]]);
 
-        return Buffer.from(params).slice(1).toString("base64")
+        return Buffer.from(params).slice(1).toString("base64");
     }
 
     /**
@@ -174,8 +178,15 @@ export class Multisig {
      * @param nonce Sender's nonce
      * @returns Message params in base64
      */
-    public approveMultisigMsg(multisigAddress: Address, messageId: number, requester: Address,
-                              from: Address, to: Address, amount: TokenAmount, nonce: number): Message {
+    public approveMultisigMsg(
+        multisigAddress: Address,
+        messageId: number,
+        requester: Address,
+        from: Address,
+        to: Address,
+        amount: TokenAmount,
+        nonce: number
+    ): Message {
         const message: Message = {
             From: from,
             To: multisigAddress,
@@ -191,7 +202,6 @@ export class Multisig {
         return message;
     }
 
-
     /**
      * @notice Creates a message to cancel multisig
      * @param multisigAddress Address of the created multisig
@@ -203,8 +213,15 @@ export class Multisig {
      * @param nonce Sender's nonce
      * @returns Message params in base64
      */
-    public cancelMultisigMsg(multisigAddress: Address, messageId: number, requester: Address,
-                              from: Address, to: Address, amount: TokenAmount, nonce: number): Message {
+    public cancelMultisigMsg(
+        multisigAddress: Address,
+        messageId: number,
+        requester: Address,
+        from: Address,
+        to: Address,
+        amount: TokenAmount,
+        nonce: number
+    ): Message {
         const message: Message = {
             From: from,
             To: multisigAddress,
