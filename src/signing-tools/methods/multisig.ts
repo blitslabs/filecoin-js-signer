@@ -176,7 +176,7 @@ export class MultisigTools {
      * @param to Recipient's FIL address
      * @param amount FIL amount to approve/cancel
      * @param nonce Sender's nonce
-     * @returns Message params in base64
+     * @returns Approve multisig message
      */
     public approveMultisigMsg(
         multisigAddress: Address,
@@ -211,7 +211,7 @@ export class MultisigTools {
      * @param to Recipient's FIL address
      * @param amount FIL amount to approve/cancel
      * @param nonce Sender's nonce
-     * @returns Message params in base64
+     * @returns Cancel multisig message
      */
     public cancelMultisigMsg(
         multisigAddress: Address,

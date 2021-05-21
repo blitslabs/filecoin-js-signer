@@ -2,6 +2,7 @@ import { LotusClient } from "filecoin.js";
 import { Message, PrivateKey, Network, Address, TokenAmount, CID } from "../../core/types/types";
 import BigNumber from "bignumber.js";
 import { FilecoinSigner } from "../../signing-tools";
+import {MessageReceipt} from "filecoin.js/builds/dist/providers/Types";
 
 export class Tx {
     constructor(public readonly clientProvider: LotusClient, private readonly signingTools: FilecoinSigner) {}
@@ -19,7 +20,7 @@ export class Tx {
         privateKey: PrivateKey,
         updateMsgNonce: boolean = true,
         waitMsg: boolean = false
-    ): Promise<CID | object> {
+    ): Promise<CID | MessageReceipt> {
         if (updateMsgNonce) {
             // Get Address Nonce
             message.Nonce = await this.clientProvider.mpool.getNonce(message.From);
@@ -35,7 +36,7 @@ export class Tx {
      * @param gasLimit The Message's gas limit to use
      * @param privateKey Private key encoded as hex or base64
      * @param network mainnet or testnet
-     * @param waitMsg Boolean indicating wether to wait for the message to confirm or not
+     * @param waitMsg Boolean indicating whether to wait for the message to confirm or not
      * @returns CID if waitMsg = false. Message's receipt if waitMsg = true
      */
     public async send(
