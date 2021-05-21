@@ -3,6 +3,7 @@ import {Multisig} from "../../../src/signing-tools/methods/multisig";
 import * as wasmSigningTools from "@blits-labs/filecoin-signing-tools/nodejs";
 import BigNumber from "bignumber.js";
 import {CodeCID} from "../../../src/core/types/types";
+import {FilecoinClient} from "../../../src/client";
 
 describe("multisig test", () => {
     let msig: Multisig;
@@ -56,6 +57,25 @@ describe("multisig test", () => {
     it("should propose a multisig", async () => {
         const wasmResult = wasmSigningTools.proposeMultisig(multisigAddress, signers[0], from, "100", 0);
         const result = await msig.proposeMultisigMsg(multisigAddress, from, signers[0], new BigNumber(100), 0);
+
+        const fixedResult = {
+            from: result.From,
+            to: result.To,
+            nonce: result.Nonce,
+            value: result.Value.toString(),
+            gaslimit: result.GasLimit,
+            gasfeecap: result.GasFeeCap.toString(),
+            gaspremium: result.GasPremium.toString(),
+            method: result.Method,
+            params: result.Params,
+        };
+
+        expect(fixedResult).toEqual(wasmResult);
+    })
+
+    it("should create a approve multisig message", async () => {
+        const wasmResult = wasmSigningTools.approveMultisig(multisigAddress, 1234, signers[0], signers[1], "100", from, 0);
+        const result = await msig.approveMultisigMsg(multisigAddress, 1234, signers[0], from, signers[1], new BigNumber(100), 0);
 
         const fixedResult = {
             from: result.From,

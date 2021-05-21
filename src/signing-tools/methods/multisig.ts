@@ -129,7 +129,16 @@ export class Multisig {
     }
 
 
-    public approveOrCancelMsigMsgParams(requester: Address, to: Address, amount: TokenAmount): MsgParams {
+
+    /**
+     * @notice Encodes the message's params required to approve/cancel a multisig
+     * @param messageId: Id of the transaction
+     * @param requester: FIL address of the requester
+     * @param to Recipient's FIL address
+     * @param amount FIL amount to approve/cancel
+     * @returns Message params in base64
+     */
+    public approveOrCancelMsigMsgParams(messageId: number, requester: Address, to: Address, amount: TokenAmount): MsgParams {
         const propose_params = cbor.util.serialize([
             [
                 addressAsBytes(requester),
@@ -142,15 +151,30 @@ export class Multisig {
 
         const serializedProposalParams =  Buffer.from(propose_params.slice(1));
 
-        // TODO
-
         const hash = createHash(serializedProposalParams);
 
-        console.log({hash})
+        const params = cbor.util.serialize([
+            [
+                messageId,
+                hash
+            ]
+        ]);
 
-        return ""
+        return Buffer.from(params).slice(1).toString("base64")
     }
 
+
+    /**
+     * @notice Encodes the message's params required to approve/cancel a multisig
+     * @param multisigAddress Address of the created multisig
+     * @param messageId: Id of the transaction
+     * @param requester: FIL address of the requester
+     * @param from Sender's FIL address
+     * @param to Recipient's FIL address
+     * @param amount FIL amount to approve/cancel
+     * @param nonce Sender's nonce
+     * @returns Message params in base64
+     */
     public approveMultisigMsg(multisigAddress: Address, messageId: number, requester: Address,
                               from: Address, to: Address, amount: TokenAmount, nonce: number): Message {
         const message: Message = {
@@ -162,7 +186,7 @@ export class Multisig {
             GasFeeCap: new BigNumber(0),
             GasPremium: new BigNumber(0),
             Method: MultisigMethod.Approve,
-            Params: this.approveOrCancelMsigMsgParams(requester, to, amount),
+            Params: this.approveOrCancelMsigMsgParams(messageId, requester, to, amount),
         };
 
         return message;
