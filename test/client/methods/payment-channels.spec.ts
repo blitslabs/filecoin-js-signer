@@ -5,7 +5,7 @@ import blake2b from "blake2b";
 
 jest.setTimeout(100000);
 
-describe("payment channel test", () => {
+xdescribe("payment channel test", () => {
     let client: FilecoinClient;
     const address = "t1o45uzfwlghly7dubahkb5ucoq5e3vg4hcfwcfzy";
     const privateKey = "VTkiC5eaUin471c/ogE1HvBocxSa1OWzDCK1rr+4aIE=";
