@@ -1,67 +1,67 @@
 {
-  "name": "@blitslabs/filecoin-js-signer",
-  "version": "1.0.3",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "package.json"
-  ],
-  "scripts": {
-    "test": "jest",
-    "format": "prettier --write \"./src/**/*.ts\" \"./test/**/*.ts\"",
-    "lint": "tslint -p tsconfig.json -c tslint.json",
-    "build": "tsc"
-  },
-  "author": "Blits Labs",
-  "license": "MIT",
-  "dependencies": {
-    "@nodefactory/filecoin-address": "^1.0.1",
-    "base32-decode": "^1.0.0",
-    "base32-encode": "^1.2.0",
-    "bignumber.js": "^9.0.1",
-    "bip32": "^2.0.6",
-    "blake2b": "^2.1.3",
-    "blakejs": "^1.1.0",
-    "bn.js": "^5.2.0",
-    "filecoin.js": "^0.0.5-alpha",
-    "ipld-dag-cbor": "github:blitslabs/js-ipld-dag-cbor",
-    "leb128": "^0.0.5",
-    "lowercase-keys": "^1.0.1",
-    "multihashing-async": "^2.1.2",
-    "prettier": "^2.2.1",
-    "secp256k1": "^4.0.2"
-  },
-  "devDependencies": {
-    "@blits-labs/filecoin-signing-tools": "^0.2.4",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^15.0.1",
-    "dotenv": "^9.0.2",
-    "jest": "^26.6.3",
-    "ts-jest": "^26.5.6",
-    "ts-node": "^9.1.1",
-    "tslint": "^6.1.3",
-    "typescript": "^4.2.4"
-  },
-  "directories": {
-    "lib": "lib",
-    "test": "tests"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/blitslabs/filecoin-js-signer.git"
-  },
-  "keywords": [
-    "filecoin",
-    "fil",
-    "signer",
-    "blits",
-    "blitslabs"
-  ],
-  "bugs": {
-    "url": "https://github.com/blitslabs/filecoin-js-signer/issues"
-  },
-  "homepage": "https://github.com/blitslabs/filecoin-js-signer#readme",
-  "description": ""
+    "name": "@blitslabs/filecoin-js-signer",
+    "version": "1.0.3",
+    "main": "dist/index.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "package.json"
+    ],
+    "scripts": {
+        "test": "jest",
+        "format": "prettier --write \"./src/**/*.ts\" \"./test/**/*.ts\" \"./**/*{.json,.md,.yaml}\"",
+        "lint": "tslint -p tsconfig.json -c tslint.json",
+        "build": "tsc"
+    },
+    "author": "Blits Labs",
+    "license": "MIT",
+    "dependencies": {
+        "@nodefactory/filecoin-address": "^1.0.1",
+        "base32-decode": "^1.0.0",
+        "base32-encode": "^1.2.0",
+        "bignumber.js": "^9.0.1",
+        "bip32": "^2.0.6",
+        "blake2b": "^2.1.3",
+        "blakejs": "^1.1.0",
+        "bn.js": "^5.2.0",
+        "filecoin.js": "^0.0.5-alpha",
+        "ipld-dag-cbor": "github:blitslabs/js-ipld-dag-cbor",
+        "leb128": "^0.0.5",
+        "lowercase-keys": "^1.0.1",
+        "multihashing-async": "^2.1.2",
+        "prettier": "^2.2.1",
+        "secp256k1": "^4.0.2"
+    },
+    "devDependencies": {
+        "@blits-labs/filecoin-signing-tools": "^0.2.4",
+        "@types/jest": "^26.0.23",
+        "@types/node": "^15.0.1",
+        "dotenv": "^9.0.2",
+        "jest": "^26.6.3",
+        "ts-jest": "^26.5.6",
+        "ts-node": "^9.1.1",
+        "tslint": "^6.1.3",
+        "typescript": "^4.2.4"
+    },
+    "directories": {
+        "lib": "lib",
+        "test": "tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/blitslabs/filecoin-js-signer.git"
+    },
+    "keywords": [
+        "filecoin",
+        "fil",
+        "signer",
+        "blits",
+        "blitslabs"
+    ],
+    "bugs": {
+        "url": "https://github.com/blitslabs/filecoin-js-signer/issues"
+    },
+    "homepage": "https://github.com/blitslabs/filecoin-js-signer#readme",
+    "description": ""
 }

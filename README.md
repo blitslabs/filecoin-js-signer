@@ -10,7 +10,6 @@ How to use the library can be found in the [reference guide](#).
 
 How to install, test and contribute can be found [here](docs/DEVELOP.md).
 
-
 ## Credits and references
 
 1. [filecoin-signing-tools](https://github.com/Zondax/filecoin-signing-tools)

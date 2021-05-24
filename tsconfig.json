@@ -1,24 +1,20 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
-      "declaration": true,
-      "removeComments": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "target": "es2015",
-      "sourceMap": true,
-      "outDir": "dist",
-      "rootDir": "src",
-      "incremental": true,
-      "esModuleInterop": true,
-      "resolveJsonModule": true,
-      "noImplicitAny": false,
-      "skipLibCheck": true
+        "module": "commonjs",
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es2015",
+        "sourceMap": true,
+        "outDir": "dist",
+        "rootDir": "src",
+        "incremental": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "noImplicitAny": false,
+        "skipLibCheck": true
     },
-    "include": [
-      "src/**/*"
-    ],
-    "exclude": [
-      "node_modules"
-    ]
-  }
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
+}
