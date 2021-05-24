@@ -1,4 +1,4 @@
-import {Address, CID, MessageResponse, Network, PrivateKey, TokenAmount} from "../../core/types/types";
+import { Address, CID, MessageResponse, Network, PrivateKey, TokenAmount } from "../../core/types/types";
 import { Tx } from "./tx";
 import BigNumber from "bignumber.js";
 import { FilecoinSigner } from "../../signing-tools";

@@ -1,7 +1,8 @@
 import {
     Address,
     CID,
-    HashedSecret, MessageResponse,
+    HashedSecret,
+    MessageResponse,
     Network,
     PrivateKey,
     SignedVoucherBase64,
@@ -31,7 +32,7 @@ export class PaymentChannel {
         network: Network = "mainnet",
         waitMsg = false
     ): Promise<MessageResponse> {
-        let message = await this.signingTools.paych.createPaymentChannelMsg(from, to, amount, 0, network);
+        const message = await this.signingTools.paych.createPaymentChannelMsg(from, to, amount, 0, network);
         return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 
@@ -49,8 +50,8 @@ export class PaymentChannel {
         privateKey: PrivateKey,
         waitMsg = false
     ): Promise<MessageResponse> {
-        let message = this.signingTools.paych.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
-        return this.tx.sendMessage(message, privateKey, true,  waitMsg);
+        const message = this.signingTools.paych.settlePaymentChannelMsg(paymentChannelAddress, from, 0);
+        return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 
     /**
@@ -71,7 +72,7 @@ export class PaymentChannel {
         privateKey: PrivateKey,
         waitMsg = false
     ): Promise<MessageResponse> {
-        let message = this.signingTools.paych.updatePaymentChannelMsg(
+        const message = this.signingTools.paych.updatePaymentChannelMsg(
             paymentChannelAddress,
             from,
             signedVoucher,
@@ -95,7 +96,7 @@ export class PaymentChannel {
         privateKey: PrivateKey,
         waitMsg = false
     ): Promise<MessageResponse> {
-        let message = this.signingTools.paych.collectPaymentChannelMsg(paymentChannelAddress, from, 0);
+        const message = this.signingTools.paych.collectPaymentChannelMsg(paymentChannelAddress, from, 0);
         return this.tx.sendMessage(message, privateKey, true, waitMsg);
     }
 }

@@ -4,7 +4,7 @@ import { PaymentChannel } from "./methods/payment-channel";
 import { Tx } from "./methods/tx";
 import { Wallet } from "./methods/wallet";
 import { FilecoinSigner } from "../signing-tools";
-import {Multisig} from "./methods/multisig";
+import { Multisig } from "./methods/multisig";
 
 export class FilecoinClient {
     private readonly lotus: LotusClient;

@@ -33,21 +33,21 @@ export class MultisigTools {
     ): Promise<MsgParams> {
         const byteAddresses = addresses.map((add) => addressAsBytes(add));
 
-        let constructor_params = cbor.util.serialize([
+        let constructorParams = cbor.util.serialize([
             [byteAddresses, requiredNumberOfApprovals, unlockDuration, startEpoch],
         ]);
 
-        constructor_params = constructor_params.slice(1);
+        constructorParams = constructorParams.slice(1);
 
         const cid = await cbor.util.cid(Buffer.from(codeCID), {
             hashAlg: multihash.names["identity"],
         });
 
-        const params = [cid, constructor_params];
+        const params = [cid, constructorParams];
 
-        const serialized_params = cbor.util.serialize(params);
+        const serializedParams = cbor.util.serialize(params);
 
-        return Buffer.from(serialized_params).toString("base64");
+        return Buffer.from(serializedParams).toString("base64");
     }
 
     /**
@@ -102,11 +102,11 @@ export class MultisigTools {
      * @returns Message params in base64
      */
     public proposeMsigMsgParams(to: Address, amount: TokenAmount): MsgParams {
-        const propose_params = cbor.util.serialize([
+        const proposeParams = cbor.util.serialize([
             [addressAsBytes(to), serializeBigNum(amount.toString()), 0, new Buffer(0)],
         ]);
 
-        return Buffer.from(propose_params.slice(1)).toString("base64");
+        return Buffer.from(proposeParams.slice(1)).toString("base64");
     }
 
     /**
@@ -154,11 +154,11 @@ export class MultisigTools {
         to: Address,
         amount: TokenAmount
     ): MsgParams {
-        const propose_params = cbor.util.serialize([
+        const proposeParams = cbor.util.serialize([
             [addressAsBytes(requester), addressAsBytes(to), serializeBigNum(amount.toString()), 0, new Buffer(0)],
         ]);
 
-        const serializedProposalParams = Buffer.from(propose_params.slice(1));
+        const serializedProposalParams = Buffer.from(proposeParams.slice(1));
 
         const hash = createHash(serializedProposalParams);
 

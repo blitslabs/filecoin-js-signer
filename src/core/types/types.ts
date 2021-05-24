@@ -10,9 +10,11 @@ export type Nonce = number;
 
 export type MsgParams = string;
 
-export type CID = string | {
-    "/": string
-};
+export type CID =
+    | string
+    | {
+          "/": string;
+      };
 
 export type MessageReceipt = {
     ExitCode: number;
@@ -26,7 +28,7 @@ export type MsgLookup = {
     ReturnDec: any;
     TipSet: CID[];
     Height: number;
-}
+};
 
 export type MessageResponse = CID | MsgLookup;
 
@@ -81,22 +83,20 @@ export enum MultisigMethod {
     ChangeNumApprovalsThreshhold,
 }
 
-export class Message {
+export interface Message {
     Version?: number;
-    To!: Address;
-    From!: Address;
-    Nonce!: Nonce;
-    Value!: BigNumber;
-    GasLimit!: number;
-    GasFeeCap!: BigNumber;
+    To: Address;
+    From: Address;
+    Nonce: Nonce;
+    Value: BigNumber;
+    GasLimit: number;
+    GasFeeCap: BigNumber;
     GasPremium: BigNumber;
-    Method!: number;
-    Params!: string;
+    Method: number;
+    Params: string;
 }
 
 export type Voucher = string;
-
-export class VoucherSpec {}
 
 export type FilecoinNetwork = "f" | "t";
 

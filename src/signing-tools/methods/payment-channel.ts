@@ -25,7 +25,7 @@ import {
 } from "../../core/types/types";
 import { addressAsBytes, serializeBigNum, tryToPrivateKeyBuffer } from "./utils";
 
-import { InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator } from "../../core/exceptions/errors";
+import { InvalidVoucherSignature, ProtocolNotSupported, UnknownProtocolIndicator } from "../../core/exceptions";
 
 export class PaymentChannelTools {
     /**
@@ -36,16 +36,16 @@ export class PaymentChannelTools {
      * @returns Message params in base64
      */
     public async createPayChMsgParams(from: Address, to: Address, codeCID: CodeCID): Promise<MsgParams> {
-        const constructor_params = cbor.util.serialize([addressAsBytes(from), addressAsBytes(to)]);
+        const constructorParams = cbor.util.serialize([addressAsBytes(from), addressAsBytes(to)]);
 
         const cid = await cbor.util.cid(Buffer.from(codeCID), {
             hashAlg: multihash.names["identity"],
         });
 
-        const params = [cid, constructor_params];
-        const serialized_params = cbor.util.serialize(params);
+        const params = [cid, constructorParams];
+        const serializedParams = cbor.util.serialize(params);
 
-        return Buffer.from(serialized_params).toString("base64");
+        return Buffer.from(serializedParams).toString("base64");
     }
 
     /**
@@ -143,7 +143,7 @@ export class PaymentChannelTools {
         const signature = secp256k1.ecdsaSign(messageDigest, privateKey);
 
         // Deserialize voucher
-        let unsignedVoucher = cbor.util.deserialize(cborUnsignedVoucher);
+        const unsignedVoucher = cbor.util.deserialize(cborUnsignedVoucher);
 
         // Format signature
         const sig = Buffer.concat([
@@ -179,7 +179,7 @@ export class PaymentChannelTools {
         }
 
         // Remove signature
-        let unsignedVoucher = Object.assign([], signedVoucher);
+        const unsignedVoucher = Object.assign([], signedVoucher);
         unsignedVoucher[10] = null;
 
         // Serialize unsigned voucher
@@ -196,10 +196,10 @@ export class PaymentChannelTools {
         switch (Number(protocolIndicator)) {
             case ProtocolIndicator.SECP256K1:
                 const sig = signature.slice(0, -1);
-                const recovery_id = signature[64];
+                const recoveryId = signature[64];
 
                 // Recover public key
-                const publicKey = secp256k1.ecdsaRecover(sig, recovery_id, messageDigest, false);
+                const publicKey = secp256k1.ecdsaRecover(sig, recoveryId, messageDigest, false);
 
                 const network = signerAddress[0] as FilecoinNetwork;
 
@@ -245,7 +245,7 @@ export class PaymentChannelTools {
         const signedVoucher = cbor.util.deserialize(cborSignedVoucher);
 
         // Update payment channel params
-        const serialized_params = cbor.util.serialize([signedVoucher, Buffer.from(secret, "hex")]);
+        const serializedParams = cbor.util.serialize([signedVoucher, Buffer.from(secret, "hex")]);
 
         // Prepare unsigned message
         const message: Message = {
@@ -257,7 +257,7 @@ export class PaymentChannelTools {
             GasFeeCap: new BigNumber(gasFeeCap),
             GasPremium: new BigNumber(gasPremium),
             Method: PaymentChannelMethod.UpdateChannelState,
-            Params: Buffer.from(serialized_params).toString("base64"),
+            Params: Buffer.from(serializedParams).toString("base64"),
         };
 
         return message;

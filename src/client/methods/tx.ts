@@ -1,5 +1,5 @@
 import { LotusClient } from "filecoin.js";
-import {Message, PrivateKey, Network, Address, TokenAmount, CID, MessageResponse} from "../../core/types/types";
+import { Message, PrivateKey, Network, Address, TokenAmount, CID, MessageResponse } from "../../core/types/types";
 import BigNumber from "bignumber.js";
 import { FilecoinSigner } from "../../signing-tools";
 
@@ -84,8 +84,6 @@ export class Tx {
     private async pushMessage(message: Message, privateKey: PrivateKey, waitMsg: boolean): Promise<MessageResponse> {
         // Get Unsigned Message with Gas Estimation
         const unsignedMessage = await this.clientProvider.gasEstimate.messageGas(message);
-
-        console.log({unsignedMessage})
 
         // Sign Message
         const signedMessage = JSON.parse(this.signingTools.tx.transactionSignLotus(unsignedMessage, privateKey));

@@ -18,7 +18,7 @@ import {
     ProtocolNotSupported,
     UnknownProtocolIndicator,
     InvalidChecksumAddress,
-} from "../../core/exceptions/errors";
+} from "../../core/exceptions";
 
 const CID_PREFIX = Buffer.from([0x01, 0x71, 0xa0, 0xe4, 0x02, 0x20]);
 
@@ -44,7 +44,9 @@ export function getDigest(message) {
 }
 
 export function addressAsBytes(address: Address) {
-    let address_decoded, payload, checksum;
+    let addressDecoded: ArrayBuffer;
+    let payload: ArrayBuffer;
+    let checksum: Buffer;
     const protocolIndicator = address[1];
     const protocolIndicatorByte = `0${protocolIndicator}`;
 
@@ -58,20 +60,20 @@ export function addressAsBytes(address: Address) {
                 Buffer.from(leb.unsigned.encode(address.substr(2))),
             ]);
         case ProtocolIndicator.SECP256K1:
-            address_decoded = base32Decode(address.slice(2).toUpperCase(), "RFC4648");
+            addressDecoded = base32Decode(address.slice(2).toUpperCase(), "RFC4648");
 
-            payload = address_decoded.slice(0, -4);
-            checksum = Buffer.from(address_decoded.slice(-4));
+            payload = addressDecoded.slice(0, -4);
+            checksum = Buffer.from(addressDecoded.slice(-4));
 
             if (payload.byteLength !== 20) {
                 throw new InvalidPayloadLength();
             }
             break;
         case ProtocolIndicator.ACTOR:
-            address_decoded = base32Decode(address.slice(2).toUpperCase(), "RFC4648");
+            addressDecoded = base32Decode(address.slice(2).toUpperCase(), "RFC4648");
 
-            payload = address_decoded.slice(0, -4);
-            checksum = Buffer.from(address_decoded.slice(-4));
+            payload = addressDecoded.slice(0, -4);
+            checksum = Buffer.from(addressDecoded.slice(-4));
 
             if (payload.byteLength !== 20) {
                 throw new InvalidPayloadLength();
@@ -83,13 +85,13 @@ export function addressAsBytes(address: Address) {
             throw new UnknownProtocolIndicator();
     }
 
-    const bytes_address = Buffer.concat([Buffer.from(protocolIndicatorByte, "hex"), Buffer.from(payload)]);
+    const bytesAddress = Buffer.concat([Buffer.from(protocolIndicatorByte, "hex"), Buffer.from(payload)]);
 
-    if (getChecksum(bytes_address).toString("hex") !== checksum.toString("hex")) {
+    if (getChecksum(bytesAddress).toString("hex") !== checksum.toString("hex")) {
         throw new InvalidChecksumAddress();
     }
 
-    return bytes_address;
+    return bytesAddress;
 }
 
 export function bytesToAddress(payload, testnet) {
@@ -139,7 +141,7 @@ export function getChecksum(payload) {
 }
 
 export function serializeBigNum(value: string) {
-    if (value == "0") {
+    if (value === "0") {
         return Buffer.from("");
     }
     const valueBigInt = new BN(value, 10);
@@ -194,7 +196,7 @@ export function signMessage(message: any, privateKey: PrivateKey): string {
  * @param signerAddress
  * @returns
  */
-export function verifySignature(message: string, signature: string, signerAddress: Address): Boolean {
+export function verifySignature(message: string, signature: string, signerAddress: Address): boolean {
     // Get Signature as Buffer
     const signatureBuffer = Buffer.from(signature, "hex");
 

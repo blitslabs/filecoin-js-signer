@@ -2,7 +2,7 @@ import * as Utils from "./methods/utils";
 import { PaymentChannelTools } from "./methods/payment-channel";
 import { TxTools } from "./methods/tx";
 import { WalletTools } from "./methods/wallet";
-import {MultisigTools} from "./methods/multisig";
+import { MultisigTools } from "./methods/multisig";
 
 export class FilecoinSigner {
     public readonly paych: PaymentChannelTools;

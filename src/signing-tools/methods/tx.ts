@@ -56,7 +56,7 @@ export class TxTools {
         const gasfeecap = serializeBigNum(message.GasFeeCap.toString());
         const gaspremium = serializeBigNum(message.GasPremium.toString());
 
-        const message_to_encode = [
+        const messageToEncode = [
             0,
             to,
             from,
@@ -69,7 +69,7 @@ export class TxTools {
             Buffer.from(message.Params, "base64"),
         ];
 
-        return cbor.util.serialize(message_to_encode);
+        return cbor.util.serialize(messageToEncode);
     }
 
     /**
@@ -134,7 +134,7 @@ export class TxTools {
      * @param signedMessage Lotus formatted signed message
      * @returns Boolean indicating wether the message's signature is valid
      */
-    public transactionVerifyLotus(signedMessage: SignedMessage): Boolean {
+    public transactionVerifyLotus(signedMessage: SignedMessage): boolean {
         // Convert signature (base64) to buffer
         const signatureBuffer = Buffer.from(signedMessage.Signature.Data, "base64");
 
