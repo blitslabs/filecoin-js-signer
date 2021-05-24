@@ -38,7 +38,7 @@ describe("payment channel test", () => {
         it("should update payment channel", async () => {
             paychAddress = "t016040"
             console.log({paychAddress})
-            const voucher = await client.signingTools.paych.createVoucher(
+            const voucher = client.signingTools.paych.createVoucher(
                 paychAddress,
                 0,
                 0,
@@ -48,10 +48,16 @@ describe("payment channel test", () => {
                 0,
                 0
             );
+
+
             const signedVoucher = client.signingTools.paych.signVoucher(voucher, privateKey);
 
-            //const message = await client.paych.updatePaymentChannel(paychAddress, address, signedVoucher, secretPreImage, privateKey, true);
-            //console.log({message})
+            console.log(voucher)
+
+            console.log(client.signingTools.paych.verifyVoucherSignature(signedVoucher, address));
+
+            const message = await client.paych.updatePaymentChannel(paychAddress, address, signedVoucher, secretPreImage, privateKey, true);
+            console.log({message})
         })
     })
 });

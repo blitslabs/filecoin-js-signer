@@ -85,6 +85,8 @@ export class Tx {
         // Get Unsigned Message with Gas Estimation
         const unsignedMessage = await this.clientProvider.gasEstimate.messageGas(message);
 
+        console.log({unsignedMessage})
+
         // Sign Message
         const signedMessage = JSON.parse(this.signingTools.tx.transactionSignLotus(unsignedMessage, privateKey));
 
