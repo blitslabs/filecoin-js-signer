@@ -9,7 +9,7 @@
     "package.json"
   ],
   "scripts": {
-    "test": "nodemon tests/index.ts",
+    "test": "jest",
     "format": "prettier --write \"./src/**/*.ts\" \"./test/**/*.ts\"",
     "build": "tsc"
   },
