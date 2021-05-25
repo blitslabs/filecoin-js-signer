@@ -19,5 +19,6 @@ jobs:
               uses: wearerequired/lint-action@v1
               with:
                   # Enable your linters here
-                  tslint: true
+                  eslint: true
                   prettier: true
+                  auto_fix: true
