@@ -1,6 +1,6 @@
 {
     "name": "@blitslabs/filecoin-js-signer",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "main": "dist/index.js",
     "module": "dist/index.esm.js",
     "types": "dist/index.d.ts",
