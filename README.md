@@ -90,6 +90,107 @@ console.log(signatureIsValid)
 // true
 ```
 
+### updatePaymentChannelMsg
+Create the unsigned message required to redeem a voucher from a payment channel
+
+```javascript
+import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+const filecoin_signer = new FilecoinSigner()
+
+const paymentChannelAddress = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
+const from = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
+const signedVoucher = 'i1UBs06WFTqFA5Kae0SvysnFOUiR2UQAAED2AABJAA3gtrOnZAAAAIBYQgE/WULVPYSydr0CsaqHkEaH9FYawRtgDOjtpubcWGdpul9lQYFsr6hOoK8anmylhGwB9p3BbGJVaTmAt2z2+srzAQ=='
+const secret = ''
+const nonce = 0
+
+const redeemVoucherMsg = await filecoin_signer.paych.updatePaymentChannelMsg(
+    paymentChannelAddress,
+    from,
+    signedVoucher,
+    secret,
+    nonce,
+)
+
+console.log(redeemVoucherMsg)
+
+// {
+//     From: 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y',
+//     To: 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y',
+//     Nonce: 0,
+//     Value: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     GasLimit: 5000000,
+//     GasFeeCap: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     GasPremium: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     Method: 2,
+//     Params: 'gotVAbNOlhU6hQOSmntEr8rJxTlIkdlEAABA9gAASQAN4Lazp2QAAACAWEIBP1lC1T2Esna9ArGqh5BGh/RWGsEbYAzo7abm3FhnabpfZUGBbK+oTqCvGp5spYRsAfadwWxiVWk5gLds9vrK8wFA'
+// }
+```
+
+### settlePaymentChannelMsg
+Create the unsigned message required to start the settling process of a payment channel.
+
+```javascript
+import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+const filecoin_signer = new FilecoinSigner()
+
+const paymentChannelAddress = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
+const from = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
+const nonce = 0
+
+const settleMsg = await filecoin_signer.paych.settlePaymentChannelMsg(
+    paymentChannelAddress,
+    from,
+    nonce,
+)
+
+console.log(settleMsg)
+
+// {
+//     From: 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y',
+//     To: 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y',
+//     Nonce: 0,
+//     Value: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     GasLimit: 0,
+//     GasFeeCap: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     GasPremium: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     Method: 3,
+//     Params: ''
+// }
+```
+
+### collectPaymentChannelMsg
+Create the unsigned message required to collect the funds in a payment channel, once the settling process has ended.
+
+```javascript
+import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+const filecoin_signer = new FilecoinSigner()
+
+const paymentChannelAddress = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
+const from = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
+const nonce = 0
+
+const collectMsg = await filecoin_signer.paych.collectPaymentChannelMsg(
+    paymentChannelAddress,
+    from,
+    nonce,
+)
+
+console.log(collectMsg)
+
+// {
+//     From: 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y',
+//     To: 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y',
+//     Nonce: 0,
+//     Value: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     GasLimit: 0,
+//     GasFeeCap: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     GasPremium: BigNumber { s: 1, e: 0, c: [ 0 ] },
+//     Method: 4,
+//     Params: ''
+// }
+```
+
+
 ## Develop
 
 How to install, test and contribute can be found [here](docs/DEVELOP.md).
