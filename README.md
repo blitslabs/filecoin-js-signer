@@ -7,14 +7,68 @@ Filecoin signing library and RPC client.
 How to use the library can be found in the [reference guide](#).
 
 ## Filecoin Signer
-Collection of methods to create and sign messages to send funds and interact with Filecoin's built-in actors.
+Collection of methods to create and sign messages to send funds and interact with Filecoin's built-in actors (Payment Channel & Multisig).
+
+### wallet.generateMnemonic
+Generate a seed phrase (mnemonic).
+
+```javascript
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
+const filecoin_signer = new FilecoinSigner()
+
+const strength = 128 // 128 => 12 words | 256 => 24 words
+const mnemonic = await filecoin_signer.wallet.generateMnemonic(strength)
+
+console.log(unsignedMessage)
+// floor electric fitness someone escape achieve mixture alley obey main funny kingdom
+```
+
+### wallet.keyDerive
+Derive (public/private) keys from a mnemonic.
+
+```javascript
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
+const filecoin_signer = new FilecoinSigner()
+
+const strength = 128 // 128 => 12 words | 256 => 24 words
+const mnemonic = await filecoin_signer.wallet.generateMnemonic(strength)
+const i = 0
+const network = 'testnet'
+
+const keys = await filecoin_signer.wallet.keyDerive(mnemonic, `m/44'/461'/0'/0/${i}`, network)
+console.log(keys)
+
+// KeyPair {
+//     _publicKey: '049333be94a4dfe65e7b2142870186f7deb9e82cf4c1790c55ef6bfa767ecd187fb2615a203cf61d76a24029f118e74705cc7c6304e4808e4c87a608a7dadedc41',
+//     _privateKey: '6f093e7932838e7d5c0b01a3c6b7be1c4d96afff9431af9b53d42cc2d0bf3e3c',
+//     _address: 't124h7myx7vyydjrwt4t456jlctx6ssbqj6wccsui'
+// }
+```
+
+### wallet.keyRecover
+Recover (public/private) keys from a private key. 
+
+```javascript
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
+const filecoin_signer = new FilecoinSigner()
+
+const privateKey = '6f093e7932838e7d5c0b01a3c6b7be1c4d96afff9431af9b53d42cc2d0bf3e3c'
+const keys = await filecoin_signer.wallet.keyRecover(privateKey, 'testnet')
+console.log(keys)
+
+// KeyPair {
+//     _publicKey: '049333be94a4dfe65e7b2142870186f7deb9e82cf4c1790c55ef6bfa767ecd187fb2615a203cf61d76a24029f118e74705cc7c6304e4808e4c87a608a7dadedc41',
+//     _privateKey: '6f093e7932838e7d5c0b01a3c6b7be1c4d96afff9431af9b53d42cc2d0bf3e3c',
+//     _address: 't124h7myx7vyydjrwt4t456jlctx6ssbqj6wccsui'
+// }
+```
 
 ### paych.createPaymentChannelMsg
 Create create the unsigned message required to create a payment channel.
 
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const from = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
@@ -43,7 +97,7 @@ console.log(unsignedMessage)
 Create an unsigned voucher to enable the voucher recipient to redeem funds from the payment channel.
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const unsignedVoucher = await filecoin_signer.paych.createVoucher(
@@ -65,7 +119,7 @@ console.log(unsignedVoucher)
 Sign a voucher with private key.
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const unsignedVoucher = 'i1UBs06WFTqFA5Kae0SvysnFOUiR2UQAAED2AABJAA3gtrOnZAAAAID2'
@@ -79,7 +133,7 @@ console.log(signedVoucher)
 Verify the signature of a voucher
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const signedVoucher = 'i1UBs06WFTqFA5Kae0SvysnFOUiR2UQAAED2AABJAA3gtrOnZAAAAIBYQgE/WULVPYSydr0CsaqHkEaH9FYawRtgDOjtpubcWGdpul9lQYFsr6hOoK8anmylhGwB9p3BbGJVaTmAt2z2+srzAQ=='
@@ -94,7 +148,7 @@ console.log(signatureIsValid)
 Create the unsigned message required to redeem a voucher from a payment channel
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const paymentChannelAddress = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
@@ -130,7 +184,7 @@ console.log(redeemVoucherMsg)
 Create the unsigned message required to start the settling process of a payment channel.
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const paymentChannelAddress = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
@@ -162,7 +216,7 @@ console.log(settleMsg)
 Create the unsigned message required to collect the funds in a payment channel, once the settling process has ended.
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const paymentChannelAddress = 'f1wnhjmfj2qubzfgt3isx4vsofhfejdwkeqgqzr4y'
@@ -194,7 +248,7 @@ console.log(collectMsg)
 Returns an unsigned message to create multi-signature wallet
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const unsignedMessage = await filecoin_signer.msig.createMultisigMsg(
@@ -224,7 +278,7 @@ const unsignedMessage = await filecoin_signer.msig.createMultisigMsg(
 Returns an unsigned message to propose a multisig message
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const unsignedMessage = await filecoin_signer.msig.proposeMultisigMsg(
@@ -252,7 +306,7 @@ const unsignedMessage = await filecoin_signer.msig.proposeMultisigMsg(
 Returns an unsigned message to approve a multisig message
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const unsignedMessage = await filecoin_signer.msig.approveMultisigMsg(
@@ -282,7 +336,7 @@ const unsignedMessage = await filecoin_signer.msig.approveMultisigMsg(
 Returns an unsigned message to cancel a multisig message
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const unsignedMessage = await filecoin_signer.msig.cancelMultisigMsg(
@@ -312,7 +366,7 @@ const unsignedMessage = await filecoin_signer.msig.cancelMultisigMsg(
 Sign an unsigned message with a given private key
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const unsignedMessage = await filecoin_signer.paych.createPaymentChannelMsg(
@@ -329,13 +383,141 @@ console.log(signedMessage)
 Verify the signature of a signed message.
 
 ```javascript
-import { FilecoinSigner } from '@blits-labs/filecoin-signing-tools'
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
 const filecoin_signer = new FilecoinSigner()
 
 const signatureIsValid = await filecoin_signer.tx.transactionVerifyLotus(signedMessage)
 
 console.log(signatureIsValid)
 // true
+```
+
+### utils.signMessage
+Utilitary function to sign a message with a given private key.
+
+```javascript
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
+const filecoin_signer = new FilecoinSigner()
+
+const message = 'message'
+const privateKey = '6f093e7932838e7d5c0b01a3c6b7be1c4d96afff9431af9b53d42cc2d0bf3e3c'
+const signedMessage = await filecoin_signer.utils.signMessage(message, privateKey)
+console.log(signedMessage)
+
+// a18a1c3f4fd55fd1842746e40dea9d26e7a24511c3f809b20b6d2254e607c8e9562d82f02ba7d72321be64049b8ee10141c7b86793bf686634a331fef75f54f800
+```
+
+### utils.verifySignature
+Utilitary function to verify a signature.
+
+```javascript
+import { FilecoinSigner } from '@blitslabs/filecoin-signing-tools'
+const filecoin_signer = new FilecoinSigner()
+
+const message = 'message'
+const privateKey = '6f093e7932838e7d5c0b01a3c6b7be1c4d96afff9431af9b53d42cc2d0bf3e3c'
+const signer = 't124h7myx7vyydjrwt4t456jlctx6ssbqj6wccsui'
+const signature = await filecoin_signer.utils.signMessage(message, privateKey)
+
+const signatureIsValid = await filecoin_signer.utils.verifySignature(message, signature, signer)
+console.log(signatureIsValid)
+
+// true
+```
+
+## Filecoin Client
+Collection of methods to create, sign and broadcast messages to send funds and interact with Filecoin's built-in actors (Payment Channel & Multisig).
+
+*The difference with FilecoinSigner is that FilecoinClient broadcasts the messages to the network.
+
+### paych.createPaymentChannel
+Create, sign and broadcast a message to create a payment channel.
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const from = 't124h7myx7vyydjrwt4t456jlctx6ssbqj6wccsui'
+const to = 't1xgb73oc3s3sengf5ghvb5jzty5ftokodkibtmfa'
+const amount = new BigNumber(1e18)    
+const privateKey = '6f093e7932838e7d5c0b01a3c6b7be1c4d96afff9431af9b53d42cc2d0bf3e3c'
+const network = 'testnet'
+const waitMsg = false // false => return CID || true => wait for tx to confirm and return tx details
+
+const response = await filecoin_client.paych.createPaymentChannel(from, to, amount, privateKey, network, waitMsg)
+console.log(response)
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### paych.updatePaymentChannelMsg
+Create, sign and broadcast a message to redeem a payment channel's  voucher.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.paych.updatePaymentChannel(
+    paymentChannelAddress,
+    from,
+    signedVoucher,
+    secret,
+    privateKey,        
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### paych.settlePaymentChannelMsg
+Create, sign and broadcast a message to settle a payment channel.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.paych.settlePaymentChannel(
+    paymentChannelAddress,
+    from,        
+    privateKey,        
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### paych.collectPaymentChannel
+Create, sign and broadcast a message to collect a payment channel.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.paych.collectPaymentChannel(
+    paymentChannelAddress,
+    from,        
+    privateKey,        
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
 ```
 
 ## Develop
