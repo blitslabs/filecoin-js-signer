@@ -425,6 +425,8 @@ console.log(signatureIsValid)
 // true
 ```
 
+<br />
+
 ## Filecoin Client
 Collection of methods to create, sign and broadcast messages to send funds and interact with Filecoin's built-in actors (Payment Channel & Multisig).
 
@@ -452,7 +454,7 @@ console.log(response)
 // }
 ```
 
-### paych.updatePaymentChannelMsg
+### paych.updatePaymentChannel
 Create, sign and broadcast a message to redeem a payment channel's  voucher.
 
 ```javascript
@@ -476,7 +478,7 @@ console.log(response)
 // }
 ```
 
-### paych.settlePaymentChannelMsg
+### paych.settlePaymentChannel
 Create, sign and broadcast a message to settle a payment channel.
 
 ```javascript
@@ -511,6 +513,163 @@ const response = await filecoin_client.paych.collectPaymentChannel(
     paymentChannelAddress,
     from,        
     privateKey,        
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### msig.createMultisig
+Create, sign and broadcast a message to create a multisig.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.msig.createMultisig(
+    from,
+    addresses,
+    amount,
+    requiredNumberOfApprovals,
+    nonce,
+    unlockDuration,
+    startEpoch,
+    "fil/4/multisig",
+    privateKey,
+    network,
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### msig.proposeMultisig
+Create, sign and broadcast a message to propose a multisig message.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.msig.proposeMultisig(
+    multisigAddress,        
+    from,
+    to,
+    amount,        
+    nonce,
+    privateKey,
+    network,
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### msig.approveMultisig
+Create, sign and broadcast a message to approve a multisig message.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.msig.approveMultisig(
+    multisigAddress,
+    messageId,
+    requester,
+    from,
+    to,
+    amount,
+    nonce,
+    privateKey,
+    network,
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### msig.cancelMultisig
+Create, sign and broadcast a message to approve a multisig message.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.msig.cancelMultisig(
+    multisigAddress,
+    messageId,
+    requester,
+    from,
+    to,
+    amount,
+    nonce,
+    privateKey,
+    network,
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### tx.send
+Create, sign and broadcast a message send FIL.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.tx.send(
+    to,
+    amount,
+    gasLimit,
+    privateKey,
+    network,
+    waitMsg
+)
+console.log(response)
+
+// {
+//   '/': 'bafy2bzacec3byj5vt5jlxssuv5idccgsag526j4x272vmm4nsqcix5luq4zrs'
+// }
+```
+
+### tx.sendMessage
+Sign and broadcast a custome message.
+
+```javascript
+import { FilecoinClient } from '@blitslabs/filecoin-signing-tools'
+const endpoint = 'https://calibration.node.glif.io'
+const token = ''
+const filecoin_client = new FilecoinClient(endpoint, token)
+
+const response = await filecoin_client.tx.sendMessage(
+    message,
+    privateKey,
+    updateMsgNonce,
     waitMsg
 )
 console.log(response)
