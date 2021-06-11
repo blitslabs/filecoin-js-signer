@@ -1,10 +1,14 @@
 # filecoin-js-signer
 
-Filecoin signing library and RPC client.
+Filecoin signing library and RPC client in pure Typescript / Javascript with the necessary methods to create, sign and broadcast messages to send FIL, and interact with Filecoin's built-in actors (like Payment Channel and Multisig).
 
-## Usage
+## Motivation
+This library was created as part of the Filecoin Loans Grant awarded by the Filecoin Foundation. At the time of its creation (April 2021), there were no functional signing libraries written in pure Javascript or that had a complete implementation of the Payment Channel actor's methods (i.e. passing a hash/secret to create and redeem vouchers, necessary to create Atomic Swaps / Atomic Loans). A pure Javascript implementation of these methods can also facilitate, or simplify, the usage from React Native or web applications that interact with the Filecoin network.
 
-How to use the library can be found in the [reference guide](#).
+
+## API Reference
+
+Go to [reference guide](https://app.gitbook.com/@blitslabs/s/filecoin-loans/tools/filecoin-js-signer/api-reference).
 
 ## Filecoin Signer
 Collection of methods to create and sign messages to send funds and interact with Filecoin's built-in actors (Payment Channel & Multisig).
@@ -683,7 +687,7 @@ console.log(response)
 
 How to install, test and contribute can be found [here](docs/DEVELOP.md).
 
-## Credits and references
+## References
 
 1. [filecoin-signing-tools](https://github.com/Zondax/filecoin-signing-tools)
 2. [filecoin.js](https://github.com/filecoin-shipyard/filecoin.js)
