@@ -5,6 +5,13 @@ Filecoin signing library and RPC client in pure Typescript / Javascript with the
 ## Motivation
 This library was created as part of the Filecoin Loans Grant awarded by the Filecoin Foundation. At the time of its creation (April 2021), there were no functional signing libraries written in pure Javascript or that had a complete implementation of the Payment Channel actor's methods (i.e. passing a hash/secret to create and redeem vouchers, necessary to create Atomic Swaps / Atomic Loans). A pure Javascript implementation of these methods can also facilitate, or simplify, the usage from React Native or web applications that interact with the Filecoin network.
 
+## Installing
+
+
+```bash
+npm install --save @blitslabs/filecoin-js-signer
+```
+
 
 ## API Reference
 
