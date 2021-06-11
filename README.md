@@ -75,7 +75,7 @@ console.log(keys)
 ```
 
 ### paych.createPaymentChannelMsg
-Create create the unsigned message required to create a payment channel.
+Create an unsigned message to create a payment channel.
 
 
 ```javascript
