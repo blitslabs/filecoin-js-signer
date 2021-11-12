@@ -30,7 +30,7 @@ const filecoin_signer = new FilecoinSigner()
 const strength = 128 // 128 => 12 words | 256 => 24 words
 const mnemonic = await filecoin_signer.wallet.generateMnemonic(strength)
 
-console.log(unsignedMessage)
+console.log(mnemonic)
 // floor electric fitness someone escape achieve mixture alley obey main funny kingdom
 ```
 
