@@ -1,5 +1,14 @@
 # filecoin-js-signer
 
+![Project Status](https://img.shields.io/badge/status-No%20longer%20maintained-red?style=for-the-badge)
+[![GitHub last commit](https://img.shields.io/github/last-commit/blitslabs/filecoin-js-signer?style=for-the-badge)](https://github.com/data-preservation-programs/spade/graphs/commit-activity)
+
+## Status
+
+Unfortunately this project has not seen any meaningful activities since November 2020 and is deemed unmaintained. If you are a user of this project and would like to become a maintainer, please reach out to [@smagdali](https://github.com/smagdali).
+
+---
+
 Filecoin signing library and RPC client in pure Typescript / Javascript with the necessary methods to create, sign and broadcast messages to send FIL, and interact with Filecoin's built-in actors (like Payment Channel and Multisig).
 
 ## Motivation
